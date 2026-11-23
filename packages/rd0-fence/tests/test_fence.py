@@ -234,3 +234,11 @@ def test_grouped_import_continuation_counts_as_wiring():
 def test_plain_diff_keeps_real_a_directory():
     d = "--- a/x.py\n+++ a/x.py\n@@ -1,1 +1,1 @@\n-1\n+2\n--- a/y.py\n+++ b/y.py\n@@ -1,1 +1,1 @@\n-1\n+2\n"
     assert [f.path for f in parse_diff(d)] == ["a/x.py", "y.py"]
+
+
+def test_clearing_never_posts_a_new_comment():
+    from rd0_fence.action import upsert_comment
+
+    gh = _FakeGH([{"id": 1, "body": MARKER + " planted"}])
+    upsert_comment(gh, 7, None)
+    assert gh.calls == [("PATCH", "/issues/comments/1")]

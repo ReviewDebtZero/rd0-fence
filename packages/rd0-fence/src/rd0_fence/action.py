@@ -19,7 +19,8 @@ def upsert_comment(gh: GitHub, number: int, body: str | None) -> None:
     """Edit Fence's own marker comment (newest first); anyone can paste the marker, so skip comments we cannot edit."""
     comments = gh.pages(f"/issues/{number}/comments", 300)
     ours = [c for c in reversed(comments) if (c.get("body") or "").startswith(MARKER)]
-    if not body:
+    clearing = not body
+    if clearing:
         if not ours:
             return
         body = MARKER + "\n**Fence:** no out-of-scope parts now."
@@ -30,7 +31,8 @@ def upsert_comment(gh: GitHub, number: int, body: str | None) -> None:
         except urllib.error.HTTPError as e:
             if e.code not in (403, 404):
                 raise
-    gh.call("POST", f"/issues/{number}/comments", {"body": body})
+    if not clearing:
+        gh.call("POST", f"/issues/{number}/comments", {"body": body})
 
 
 def run(event: dict, gh: GitHub, issue_number: int | None = None, min_lines: int = 1) -> str | None:
