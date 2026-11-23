@@ -51,6 +51,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <noscript>
+          <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
         {/* Runs before first paint, so the stored or preferred theme is already
             applied and there is no flash of the wrong one. Deliberately tiny
             and dependency-free. */}
