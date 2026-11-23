@@ -52,8 +52,12 @@ def load(path: str) -> pd.DataFrame:
                     }
                 )
         return pd.DataFrame(out, columns=["id", "pr_id", "path", "label", "unresolvable"])
-    d = pd.read_csv(p, dtype=str).fillna("")
-    d = d[d.label.str.strip() != ""].drop_duplicates("id", keep="last")
+    d = pd.read_csv(p, dtype=str).fillna("").drop_duplicates("id", keep="last")
+    unres = d.pr_scope_unresolvable.str.strip().str.lower().isin(["1", "y", "yes", "true", "x"])
+    d["unresolvable"] = unres.groupby(d.pr_id).transform("any")
+    blank = d.label.str.strip() == ""
+    d = d[~blank | d.unresolvable].copy()
+    d.loc[d.label.str.strip() == "", "label"] = "unsure"
     norm = {
         "in": "in",
         "in scope": "in",
@@ -65,22 +69,24 @@ def load(path: str) -> pd.DataFrame:
     d["label"] = d.label.str.strip().str.lower().map(norm)
     if d.label.isna().any():
         raise SystemExit(f"{path}: labels must be one of {sorted(set(norm))}")
-    unres = d.pr_scope_unresolvable.str.strip().str.lower().isin(["1", "y", "yes", "true", "x"])
-    d["unresolvable"] = unres.groupby(d.pr_id).transform("any")
     return d[["id", "pr_id", "path", "label", "unresolvable"]]
 
 
 def prf(y, p) -> dict:
     y, p = np.asarray(y, bool), np.asarray(p, bool)
     tp, fp, fn = int((y & p).sum()), int((~y & p).sum()), int((y & ~p).sum())
+
+    def ci(k, n):
+        return [round(x, 3) for x in wilson(k, n)] if n else None
+
     return {
         "n": int(len(y)),
         "positives": int(y.sum()),
         "flagged": int(p.sum()),
         "precision": round(tp / (tp + fp), 3) if tp + fp else None,
-        "precision_ci95": [round(x, 3) for x in wilson(tp, tp + fp)],
+        "precision_ci95": ci(tp, tp + fp),
         "recall": round(tp / (tp + fn), 3) if tp + fn else None,
-        "recall_ci95": [round(x, 3) for x in wilson(tp, tp + fn)],
+        "recall_ci95": ci(tp, tp + fn),
     }
 
 
@@ -117,11 +123,22 @@ def score(d: pd.DataFrame, key: pd.DataFrame) -> dict:
         ),
         "auroc_file_tfidf_dist": auc(y, f.file_tfidf_dist, groups=f.pr_id.values),
     }
-    pr = f.groupby("pr_id").agg(
-        human=("label", lambda s: (s == "out").any()),
-        fence=("fence_out_of_scope", lambda s: (s.astype(str) == "True").any()),
-        **{b: (b, "first") for b in PR_BASELINES},
+    # A PR is a human positive if any file is out of scope; with no out-of-scope file but some "can't tell" files
+    # it is undecided and left out. Fence's PR verdict uses all files, judged or not.
+    pr = (
+        m[~m.unresolvable]
+        .groupby("pr_id")
+        .agg(
+            has_out=("label", lambda s: (s == "out").any()),
+            has_unsure=("label", lambda s: (s == "unsure").any()),
+            anchored=("fence_anchored", "first"),
+            n_flagged=("pr_n_flagged", "first"),
+            **{b: (b, "first") for b in PR_BASELINES},
+        )
     )
+    pr = pr[pr.has_out | ~pr.has_unsure]
+    pr["human"] = pr.has_out
+    pr["fence"] = (pr.anchored.astype(str) == "True") & (pr.n_flagged > 0)
     out["pr_level"] = {"fence": prf(pr.human, pr.fence), "auroc": {b: auc(pr.human, pr[b]) for b in PR_BASELINES}}
     return out
 
@@ -132,7 +149,10 @@ def main() -> None:
     ap.add_argument("--out", default=str(HERE / "agreement.json"))
     a = ap.parse_args()
     key = pd.read_csv(HERE / "key_do_not_open.csv", dtype={"pr_id": str})
-    sheets = {Path(p).stem: load(p) for p in a.answers}
+    names = [Path(p).stem for p in a.answers]
+    if len(set(names)) != len(names):
+        raise SystemExit(f"answer files need distinct names (got {names}); rename them, e.g. a.jsonl and b.jsonl")
+    sheets = {n: load(p) for n, p in zip(names, a.answers)}
     res = {"annotators": {n: score(d, key) for n, d in sheets.items()}, "pairwise": {}}
     for (na, da), (nb, db) in combinations(sheets.items(), 2):
         j = da.merge(db, on="id", suffixes=("_a", "_b"))
