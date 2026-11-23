@@ -215,3 +215,8 @@ def test_issue_links_are_not_directory_anchors():
 def test_dir_anchor_before_sentence_period():
     it = Issue.from_text("UI", "Only touch ui/v2/. Also src/core/login.py")
     assert "ui/v2" in it.dirs and "src/core" not in it.dirs
+
+
+def test_reindent_with_apostrophes_in_comments_is_formatting():
+    d = "diff --git a/a.py b/a.py\n@@ -1,3 +1,3 @@\n-# don't\n-x = 1\n-# it's\n+# don't\n+    x = 1\n+# it's\n"
+    assert parse_diff(d)[0].hunks[0].whitespace_only()

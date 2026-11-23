@@ -33,7 +33,8 @@ class Hunk:
         """True when the hunk only re-indents or re-wraps lines (same tokens before and after)."""
         if not self.added and not self.removed:
             return False
-        return CODE_TOKEN.findall("\n".join(self.added)) == CODE_TOKEN.findall("\n".join(self.removed))
+        toks = lambda xs: [t for x in xs for t in CODE_TOKEN.findall(x)]  # noqa: E731
+        return toks(self.added) == toks(self.removed)
 
     def symbols(self) -> set[str]:
         """Names defined in or enclosing this hunk: the @@ header, plus def/class lines (changed or context)."""
