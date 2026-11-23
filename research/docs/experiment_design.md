@@ -47,6 +47,16 @@ in-scope file) as in scope or out of scope, and gives a reason.
 - RQ3: association with outcomes (merged or not, review comments, later reverts), controlling for PR size and repo.
 All rates are reported with confidence intervals and corrected by measured precision where it matters.
 
+## Status after PR 2 (benchmark)
+- Corpus built and scored: 54,058 AIDev v5 PRs ([benchmark](../experiments/benchmark/)).
+- **Scope unresolvable.** Fence calls a PR scope unresolvable when the issue names no path, code name or matching
+  file; it then flags nothing. 2,361 corpus PRs (4.4%) and 16 of the 300 gold-sheet PRs land there. Annotators get
+  the same option ("the issue is too vague to say what is in scope"); their count is reported once they label.
+- Gold sheet drawn: 300 PRs, 50 per agent, from 44,186 eligible PRs (1-20 files, <= 3,000 changed lines), 1,513 files
+  ([label_audit](../experiments/label_audit/)). Not yet labelled, so no precision or agreement is reported.
+- PAIChecker check done: on 3,087 labelled instances, PR size ranks scope creep better than Fence (AUROC 0.757 vs
+  0.577). The papers must report this and the rule changes it motivates, measured on held-out data.
+
 ## Threats
 Issue text can be vague (Fence then reports "scope unknown" and only judges CI, dependency and formatting parts);
 some extras are welcome (maintainers asked in comments, not in the issue); AIDev diff rows are per commit.

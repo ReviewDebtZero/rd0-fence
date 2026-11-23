@@ -82,6 +82,10 @@ out-of-scope lines). See [docs/USERS_GUIDE.md](docs/USERS_GUIDE.md).
 - [Experiment design](research/docs/experiment_design.md): the scope-reach metric, gold sheet and baselines.
 - [Feasibility](research/experiments/feasibility/): 69,157 of 361,296 AIDev-pop agent PRs (19.1%) link an issue
   with usable text; 68,192 of those have diff rows.
+- [Benchmark](research/experiments/benchmark/): Fence and four baselines on the 54,058-PR AIDev corpus, plus a check
+  against PAIChecker's human scope-creep labels (where plain PR size currently beats Fence).
+- [Gold sheet and labeling app](research/experiments/label_audit/): 300 PRs (50 per agent), 1,513 files, labelled per
+  file; no human results yet.
 
 ## Layout
 

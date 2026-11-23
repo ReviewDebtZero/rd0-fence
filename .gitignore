@@ -22,3 +22,7 @@ research/paper/**/*.fls
 research/paper/**/*.fdb_latexmk
 research/paper/**/*.out
 research/paper/tooldemo/video/frames/
+
+# rd0-fence: human labels and local benchmark data stay out of git until annotators finish
+research/experiments/label_audit/app/answers/
+data/
