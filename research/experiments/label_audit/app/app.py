@@ -127,7 +127,10 @@ def jump(name, target):
 def submit(name, idx, unresolvable, out_of_scope, cant_tell, note):
     if not name:
         gr.Warning("Enter your annotator name first.")
-        return render_task(name, idx)
+        return render_task(name, max(idx, 0))
+    if idx < 0:
+        gr.Warning("Click Start / resume to load a PR before saving.")
+        return [gr.update()] * 10
     both = set(out_of_scope or []) & set(cant_tell or [])
     if both and not unresolvable:
         gr.Warning("A file cannot be both out of scope and can't tell: " + ", ".join(sorted(both)))
@@ -169,7 +172,7 @@ with gr.Blocks(title="Fence scope labeling") as demo:
         jump_num = gr.Number(label="Jump to PR #", precision=0, minimum=1)
         export_btn = gr.Button("Get my answers file")
         export_file = gr.File(interactive=False)
-    idx_state = gr.State(0)
+    idx_state = gr.State(-1)
 
     outs = [header, links, issue, diff, unresolvable, out_of_scope, cant_tell, note, progress_md, idx_state]
     start_btn.click(start, name, outs)
