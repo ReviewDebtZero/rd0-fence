@@ -1,8 +1,9 @@
 # Claims ledger
 
-Every number in either paper comes from `generated/numbers.tex` and the `generated/tab_*.tex` tables, which
+Every number in the paper (`short/`, and the deferred `tooldemo/` draft) comes from `generated/numbers.tex` and the `generated/tab_*.tex` tables, which
 `scripts/make_paper_numbers.py` builds from the files below. No number is typed into the LaTeX by hand.
-All prevalence numbers are Fence's own flags; no human-label result is reported (the gold sheet is unlabelled).
+All prevalence numbers are Fence's own flags; no human-label result is reported (the gold sheet is unlabelled, and
+the gold-sheet table in the paper is an explicit placeholder with no values).
 
 | Claim | Source |
 |---|---|
