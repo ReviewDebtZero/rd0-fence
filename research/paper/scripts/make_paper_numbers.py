@@ -56,8 +56,8 @@ macros.update(
     meanReach=f"{al['mean_reach_pct']:.1f}",
     ciMeanReach=ci(al["mean_reach_ci95"]),
     medianReach=f"{al['median_reach_pct']:.1f}",
-    nRepos="8{,}548",
-    nTyped=n(sum(v["prs"] for v in P["by_task_type"].values())),
+    nRepos=n(C["corpus"]["repos"]),
+    nTyped=n(C["corpus"]["task_typed_prs"]),
 )
 for cat, key in [("unrelated code", "Unrel"), ("docs", "Docs"), ("tests", "Tests"), ("formatting", "Fmt"),
                  ("dependencies", "Deps"), ("ci", "CI")]:  # fmt: skip

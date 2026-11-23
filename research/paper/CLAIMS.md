@@ -7,7 +7,7 @@ All prevalence numbers are Fence's own flags; no human-label result is reported 
 | Claim | Source |
 |---|---|
 | Corpus size, anchored PRs, scope unresolvable, any/high flag rates, mean/median reach, categories, per-agent and per-task rates | `research/experiments/benchmark/results/prevalence.json` (`prevalence.py`) |
-| 8,548 repositories | `research/docs/dataset_survey.md` (feasibility run, milestone 1) |
+| 7,149 repositories, 2,631 PRs with a task type | `results/composition.json` → `corpus` (`composition.py`) |
 | Median files, share over 16 files, file-count-standardized flag rates, missing-patch share, Copilot's most-flagged files, merged vs unmerged (raw and standardized) | `results/composition.json` (`composition.py`) |
 | PAIChecker AUROCs, precision/recall at Fence's flag budget | `results/paichecker.json` (`paichecker.py`) |
 | Fence + size cross-validated AUROC, paired bootstrap gain, size-tercile AUROCs | `results/combo.json` (`combo.py`) |
