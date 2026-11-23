@@ -1,0 +1,58 @@
+{
+ "instances": 3087,
+ "positives": 455,
+ "cv_auroc": {
+  "size": {
+   "mean": 0.756,
+   "min": 0.756,
+   "max": 0.757
+  },
+  "size+files": {
+   "mean": 0.757,
+   "min": 0.756,
+   "max": 0.758
+  },
+  "fence": {
+   "mean": 0.577,
+   "min": 0.57,
+   "max": 0.582
+  },
+  "size+fence": {
+   "mean": 0.757,
+   "min": 0.756,
+   "max": 0.758
+  },
+  "size+files+fence": {
+   "mean": 0.758,
+   "min": 0.756,
+   "max": 0.758
+  }
+ },
+ "delta_size_fence_vs_size": {
+  "mean": 0.002,
+  "ci95": [
+   -0.001,
+   0.005
+  ]
+ },
+ "size_terciles": {
+  "small": {
+   "instances": 1029,
+   "scope_creep": 41,
+   "fence_auroc": 0.529,
+   "size_auroc": 0.607
+  },
+  "middle": {
+   "instances": 1029,
+   "scope_creep": 119,
+   "fence_auroc": 0.55,
+   "size_auroc": 0.581
+  },
+  "large": {
+   "instances": 1029,
+   "scope_creep": 295,
+   "fence_auroc": 0.517,
+   "size_auroc": 0.653
+  }
+ }
+}

@@ -1,0 +1,277 @@
+{
+ "bins": [
+  "1",
+  "2",
+  "3",
+  "4-5",
+  "6-8",
+  "9-16",
+  "17-32",
+  "33-64",
+  "65+"
+ ],
+ "agents": {
+  "Claude_Code": {
+   "anchored_prs": 38530,
+   "median_files": 4.0,
+   "median_lines": 167.0,
+   "share_over_16_files": 16.8,
+   "flag_rate": 52.57,
+   "flag_rate_ci95": [
+    52.07,
+    53.07
+   ],
+   "flag_rate_std_files": 55.9,
+   "flagged_noncode_only": 20.4,
+   "file_rows_missing_patch": 1.34
+  },
+  "Copilot": {
+   "anchored_prs": 6224,
+   "median_files": 15.0,
+   "median_lines": 756.5,
+   "share_over_16_files": 46.3,
+   "flag_rate": 82.34,
+   "flag_rate_ci95": [
+    81.38,
+    83.27
+   ],
+   "flag_rate_std_files": 62.9,
+   "flagged_noncode_only": 11.7,
+   "file_rows_missing_patch": 1.21
+  },
+  "OpenAI_Codex": {
+   "anchored_prs": 5055,
+   "median_files": 4.0,
+   "median_lines": 152.0,
+   "share_over_16_files": 16.2,
+   "flag_rate": 56.38,
+   "flag_rate_ci95": [
+    55.01,
+    57.74
+   ],
+   "flag_rate_std_files": 58.3,
+   "flagged_noncode_only": 27.4,
+   "file_rows_missing_patch": 1.27
+  },
+  "Devin": {
+   "anchored_prs": 910,
+   "median_files": 3.0,
+   "median_lines": 178.0,
+   "share_over_16_files": 12.6,
+   "flag_rate": 49.89,
+   "flag_rate_ci95": [
+    46.65,
+    53.13
+   ],
+   "flag_rate_std_files": 57.0,
+   "flagged_noncode_only": 16.7,
+   "file_rows_missing_patch": 1.29
+  },
+  "Cursor": {
+   "anchored_prs": 750,
+   "median_files": 5.0,
+   "median_lines": 238.0,
+   "share_over_16_files": 19.3,
+   "flag_rate": 67.6,
+   "flag_rate_ci95": [
+    64.17,
+    70.85
+   ],
+   "flag_rate_std_files": 66.5,
+   "flagged_noncode_only": 18.5,
+   "file_rows_missing_patch": 2.61
+  },
+  "Google_Jules": {
+   "anchored_prs": 228,
+   "median_files": 2.0,
+   "median_lines": 78.0,
+   "share_over_16_files": 11.0,
+   "flag_rate": 40.35,
+   "flag_rate_ci95": [
+    34.19,
+    46.83
+   ],
+   "flag_rate_std_files": 57.9,
+   "flagged_noncode_only": 13.0,
+   "file_rows_missing_patch": 1.32
+  },
+  "ALL": {
+   "anchored_prs": 51697,
+   "median_files": 5.0,
+   "median_lines": 204.0,
+   "share_over_16_files": 20.2,
+   "flag_rate": 56.64,
+   "flag_rate_ci95": [
+    56.22,
+    57.07
+   ],
+   "flag_rate_std_files": 56.6,
+   "flagged_noncode_only": 19.5,
+   "file_rows_missing_patch": 1.31
+  }
+ },
+ "flag_rate_by_files": [
+  {
+   "files": "1",
+   "share_all": 15.3,
+   "Claude_Code": 11.7,
+   "Copilot": 19.0,
+   "OpenAI_Codex": 16.6,
+   "Devin": 13.8,
+   "Cursor": 21.1,
+   "Google_Jules": 6.6
+  },
+  {
+   "files": "2",
+   "share_all": 16.5,
+   "Claude_Code": 22.6,
+   "Copilot": 32.5,
+   "OpenAI_Codex": 15.4,
+   "Devin": 16.8,
+   "Cursor": 36.5,
+   "Google_Jules": 18.8
+  },
+  {
+   "files": "3",
+   "share_all": 10.4,
+   "Claude_Code": 49.9,
+   "Copilot": 61.6,
+   "OpenAI_Codex": 61.3,
+   "Devin": 43.1,
+   "Cursor": 60.8,
+   "Google_Jules": null
+  },
+  {
+   "files": "4-5",
+   "share_all": 13.1,
+   "Claude_Code": 60.3,
+   "Copilot": 72.8,
+   "OpenAI_Codex": 63.0,
+   "Devin": 64.8,
+   "Cursor": 72.5,
+   "Google_Jules": null
+  },
+  {
+   "files": "6-8",
+   "share_all": 11.3,
+   "Claude_Code": 70.6,
+   "Copilot": 84.3,
+   "OpenAI_Codex": 75.3,
+   "Devin": 76.7,
+   "Cursor": 85.4,
+   "Google_Jules": null
+  },
+  {
+   "files": "9-16",
+   "share_all": 13.2,
+   "Claude_Code": 79.2,
+   "Copilot": 84.5,
+   "OpenAI_Codex": 81.6,
+   "Devin": 82.4,
+   "Cursor": 90.4,
+   "Google_Jules": null
+  },
+  {
+   "files": "17-32",
+   "share_all": 7.7,
+   "Claude_Code": 88.7,
+   "Copilot": 88.1,
+   "OpenAI_Codex": 91.7,
+   "Devin": 93.5,
+   "Cursor": 94.8,
+   "Google_Jules": null
+  },
+  {
+   "files": "33-64",
+   "share_all": 5.1,
+   "Claude_Code": 94.5,
+   "Copilot": 90.0,
+   "OpenAI_Codex": 96.0,
+   "Devin": null,
+   "Cursor": 100.0,
+   "Google_Jules": null
+  },
+  {
+   "files": "65+",
+   "share_all": 7.5,
+   "Claude_Code": 98.0,
+   "Copilot": 90.1,
+   "OpenAI_Codex": 99.7,
+   "Devin": 98.4,
+   "Cursor": 100.0,
+   "Google_Jules": null
+  }
+ ],
+ "copilot_top_flagged": [
+  {
+   "file": "readme.md",
+   "copilot_prs_pct": 11.4,
+   "other_prs_pct": 6.6
+  },
+  {
+   "file": "package.json",
+   "copilot_prs_pct": 7.9,
+   "other_prs_pct": 3.3
+  },
+  {
+   "file": ".gitignore",
+   "copilot_prs_pct": 6.4,
+   "other_prs_pct": 3.6
+  },
+  {
+   "file": "changelog.md",
+   "copilot_prs_pct": 5.8,
+   "other_prs_pct": 4.6
+  },
+  {
+   "file": "copilot-instructions.md",
+   "copilot_prs_pct": 5.0,
+   "other_prs_pct": 0.1
+  },
+  {
+   "file": "package-lock.json",
+   "copilot_prs_pct": 4.6,
+   "other_prs_pct": 1.3
+  },
+  {
+   "file": "global.json",
+   "copilot_prs_pct": 3.3,
+   "other_prs_pct": 0.0
+  },
+  {
+   "file": "tsconfig.json",
+   "copilot_prs_pct": 3.1,
+   "other_prs_pct": 0.9
+  },
+  {
+   "file": "index.ts",
+   "copilot_prs_pct": 2.6,
+   "other_prs_pct": 1.8
+  },
+  {
+   "file": "makefile",
+   "copilot_prs_pct": 2.2,
+   "other_prs_pct": 0.8
+  },
+  {
+   "file": "settings.json",
+   "copilot_prs_pct": 2.0,
+   "other_prs_pct": 0.5
+  },
+  {
+   "file": "pnpm-lock.yaml",
+   "copilot_prs_pct": 2.0,
+   "other_prs_pct": 0.9
+  }
+ ],
+ "merge": {
+  "merged_flag_rate": 57.88,
+  "unmerged_flag_rate": 54.08,
+  "raw_diff_pts": 3.8,
+  "std_diff_pts": -0.47,
+  "std_diff_ci95": [
+   -4.52,
+   2.85
+  ]
+ }
+}

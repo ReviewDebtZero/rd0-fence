@@ -43,3 +43,11 @@ python paichecker.py --labels PAIChecker/labelled_data --swebench swebench.parqu
 - AIDev stores per-commit file rows, so a file's patch is every commit's patch for it joined together; line counts
   can double-count lines rewritten across commits. Copilot PRs are under-represented (many lack patches).
 - Task types come from AIDev-full's conventional-commit labels and cover 2,631 corpus PRs.
+
+## Follow-up analyses (for the papers)
+
+| Script | Output |
+|---|---|
+| `composition.py --corpus ...` | [`results/composition.md`](results/composition.md): file-count-standardized flag rates, missing patches, Copilot's most-flagged files, merged vs unmerged |
+| `combo.py` (same arguments as `paichecker.py`) | [`results/combo.md`](results/combo.md): does Fence add anything to PR size on PAIChecker? (No: +0.002 AUROC, CI includes 0) |
+| `latency.py --corpus ...` | `results/latency.json`: Fence's time per PR on 2,000 random corpus PRs |
