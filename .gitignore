@@ -30,3 +30,4 @@ data/
 # Demo video build output (the final video lives in web/public/)
 assets/video/src/*.mp4
 assets/video/src/term.html
+!web/src/data/
