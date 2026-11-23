@@ -220,3 +220,12 @@ def test_dir_anchor_before_sentence_period():
 def test_reindent_with_apostrophes_in_comments_is_formatting():
     d = "diff --git a/a.py b/a.py\n@@ -1,3 +1,3 @@\n-# don't\n-x = 1\n-# it's\n+# don't\n+    x = 1\n+# it's\n"
     assert parse_diff(d)[0].hunks[0].whitespace_only()
+
+
+def test_grouped_import_continuation_counts_as_wiring():
+    iss = Issue.from_text("Fix tokenize crash", "`src/tokenizer.ts` crashes on empty input")
+    d = (
+        "diff --git a/src/tokenizer.ts b/src/tokenizer.ts\n@@ -1,1 +1,2 @@\n x = 1\n+y = 2\n"
+        "diff --git a/src/app.ts b/src/app.ts\n@@ -1,1 +1,4 @@\n a = 1\n+import {\n+  tokenize,\n+} from './tokenizer'\n"
+    )
+    assert "src/app.ts" not in {p.path for p in check(iss, parse_diff(d)).flagged}
