@@ -135,7 +135,7 @@ def test_plain_diff_u_and_header_like_content():
 def test_space_change_inside_string_is_not_formatting():
     d = 'diff --git a/a.py b/a.py\n@@ -1,1 +1,1 @@\n-x = "a b"\n+x = "a  b"\n'
     assert not parse_diff(d)[0].hunks[0].whitespace_only()
-    d2 = 'diff --git a/a.py b/a.py\n@@ -1,1 +1,1 @@\n-x = f( 1 )\n+x = f(1)\n'
+    d2 = "diff --git a/a.py b/a.py\n@@ -1,1 +1,1 @@\n-x = f( 1 )\n+x = f(1)\n"
     assert parse_diff(d2)[0].hunks[0].whitespace_only()
 
 
@@ -145,7 +145,9 @@ def test_file_path_does_not_add_parent_dir_anchor():
 
 
 def test_missing_patch_keeps_github_line_counts():
-    fc = files_from_patches([{"filename": "big.py", "status": "modified", "additions": 40, "deletions": 2, "changes": 42}])[0]
+    fc = files_from_patches(
+        [{"filename": "big.py", "status": "modified", "additions": 40, "deletions": 2, "changes": 42}]
+    )[0]
     assert fc.changed == 42 and not fc.binary
 
 
@@ -165,3 +167,39 @@ def test_issue_naming_a_file_flags_unrelated_only_changes():
     d = "diff --git a/src/billing.py b/src/billing.py\n@@ -1,1 +1,2 @@\n a = 1\n+b = 2\n"
     rep = check(iss, parse_diff(d))
     assert rep.anchored and [p.path for p in rep.flagged] == ["src/billing.py"]
+
+
+class _FakeGH:
+    repo = "o/r"
+
+    def __init__(self, comments):
+        self.comments, self.calls = comments, []
+
+    def pages(self, path, limit):
+        return self.comments
+
+    def call(self, method, path, body=None, repo=None):
+        import urllib.error
+
+        self.calls.append((method, path))
+        if method == "PATCH" and path.endswith("/1"):
+            raise urllib.error.HTTPError(path, 403, "forbidden", None, None)
+
+
+def test_upsert_skips_marker_comments_it_cannot_edit():
+    from rd0_fence.action import upsert_comment
+
+    gh = _FakeGH([{"id": 2, "body": MARKER + " old"}, {"id": 1, "body": MARKER + " planted"}])
+    upsert_comment(gh, 7, MARKER + " new")
+    assert gh.calls == [("PATCH", "/issues/comments/1"), ("PATCH", "/issues/comments/2")]
+    gh = _FakeGH([{"id": 1, "body": MARKER + " planted"}])
+    upsert_comment(gh, 7, MARKER + " new")
+    assert gh.calls[-1] == ("POST", "/issues/7/comments")
+
+
+def test_action_ignores_issues_in_other_repos():
+    from rd0_fence.action import run
+
+    gh = _FakeGH([])
+    assert run({"pull_request": {"number": 3, "body": "Fixes other/private#9"}}, gh) is None
+    assert gh.calls == []

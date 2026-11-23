@@ -18,7 +18,7 @@ fence github OWNER/REPO#N [--issue-number N] [--format ...] [--fail-over X]
 - `--issue`: JSON `{"title", "body", "number"}` or Markdown whose first line is the title.
 - `--fail-over X`: exit 1 when scope reach is above X (for CI gates; off by default).
 - `fence github` reads `GITHUB_TOKEN` or `GH_TOKEN` if set. The linked issues come from closing keywords
-  (`Fixes #12`, `Closes owner/repo#3`) or issue URLs in the PR body.
+  (`Fixes #12`, `Closes owner/repo#3`) or issue URLs in the PR body. The Action only reads issues in the PR's own repository, so a PR author cannot make it reveal private issues elsewhere; the CLI reads any issue your token can see.
 
 ## Action inputs
 | Input | Default | Meaning |

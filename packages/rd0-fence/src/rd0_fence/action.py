@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import urllib.error
 
 from .github import GitHub, linked_issues
 from .issue import Issue
@@ -15,19 +16,28 @@ from .scope import check
 
 
 def upsert_comment(gh: GitHub, number: int, body: str | None) -> None:
+    """Edit Fence's own marker comment (newest first); anyone can paste the marker, so skip comments we cannot edit."""
     comments = gh.pages(f"/issues/{number}/comments", 300)
-    mine = next((c for c in comments if MARKER in (c.get("body") or "")), None)
-    if mine and body:
-        gh.call("PATCH", f"/issues/comments/{mine['id']}", {"body": body})
-    elif mine and not body:
-        gh.call("PATCH", f"/issues/comments/{mine['id']}", {"body": MARKER + "\n**Fence:** no out-of-scope parts now."})
-    elif body:
-        gh.call("POST", f"/issues/{number}/comments", {"body": body})
+    ours = [c for c in reversed(comments) if (c.get("body") or "").startswith(MARKER)]
+    if not body:
+        if not ours:
+            return
+        body = MARKER + "\n**Fence:** no out-of-scope parts now."
+    for c in ours:
+        try:
+            gh.call("PATCH", f"/issues/comments/{c['id']}", {"body": body})
+            return
+        except urllib.error.HTTPError as e:
+            if e.code not in (403, 404):
+                raise
+    gh.call("POST", f"/issues/{number}/comments", {"body": body})
 
 
 def run(event: dict, gh: GitHub, issue_number: int | None = None, min_lines: int = 1) -> str | None:
     pr = event["pull_request"]
     refs = [(gh.repo, issue_number)] if issue_number else linked_issues(pr.get("body") or "", gh.repo)
+    # The PR author picks these references; reading other repositories' issues could leak private issue text.
+    refs = [(r, n) for r, n in refs if r.lower() == gh.repo.lower()]
     if not refs:
         print("rd0_fence: PR links no issue (use 'Fixes #N' in the description); skipping")
         return None
