@@ -33,12 +33,23 @@ def standardized(flag: np.ndarray, b: np.ndarray, weights: np.ndarray) -> float:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--corpus", required=True)
+    ap.add_argument(
+        "--scores", default=str(HERE / "results" / "pr_scores.parquet"), help="pr_scores.parquet from this run"
+    )
     ap.add_argument("--out", default=str(HERE / "results"))
     a = ap.parse_args()
     corpus, out = Path(a.corpus), Path(a.out)
 
-    d = pd.read_parquet(HERE / "results" / "pr_scores.parquet")
-    d = d.merge(pd.read_parquet(corpus / "prs.parquet", columns=["pr_id", "repo_id"]), on="pr_id")
+    prs = pd.read_parquet(corpus / "prs.parquet", columns=["pr_id", "repo_id", "task_type"])
+    d = pd.read_parquet(a.scores)
+    if len(d) != len(prs) or set(d.pr_id) != set(prs.pr_id):
+        raise SystemExit(f"{a.scores} does not match {corpus}: rerun baselines.py and prevalence.py first")
+    d = d.merge(prs[["pr_id", "repo_id"]], on="pr_id")
+    corpus_stats = {
+        "prs": len(prs),
+        "repos": int(prs.repo_id.nunique()),
+        "task_typed_prs": int(prs.task_type.notna().sum()),
+    }
     anc = d[d.anchored].copy()
     anc["flag"] = (anc.n_flagged > 0).astype(float)
     anc["bin"] = pd.cut(anc.n_files, BINS, labels=False).astype(int)
@@ -118,6 +129,7 @@ def main() -> None:
     }
 
     res = {
+        "corpus": corpus_stats,
         "bins": BIN_LABELS,
         "agents": agents,
         "flag_rate_by_files": by_bin,
