@@ -12,7 +12,7 @@ DEF = re.compile(
     r"^\s*(?:export\s+)?(?:async\s+)?(?:def|class|function|func|fn|interface|type|struct|enum|trait|impl"
     r"|(?:public|private|protected|static|final|abstract)\s[\w<>\[\], ]*?)\s*\(?\s*([A-Za-z_][\w]*)"
 )
-CODE_TOKEN = re.compile(r"\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|`[^`]*`|\\S")
+CODE_TOKEN = re.compile(r"\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'|`[^`]*`|\S")
 ASSIGN_DEF = re.compile(r"^\s*(?:export\s+)?(?:const|let|var)\s+([A-Za-z_]\w*)\s*=")
 
 
