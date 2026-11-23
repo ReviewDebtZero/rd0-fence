@@ -1,0 +1,5 @@
+fence: 4 part(s) outside the issue's scope, 13/22 changed lines (59%)
+  [low] utils/text.py @@ +23 def truncate(value, n): (+/-4): formatting-only edit (same tokens, new whitespace)
+  [high] utils/dates.py (+/-6): edits a code file (changes `parse`) that no path, name or term in the issue points to
+  [high] .github/workflows/ci.yml (+/-2): changes CI or workflow config; the issue never mentions CI
+  [high] requirements.txt (+/-1): changes dependencies or package metadata; the issue does not ask for that

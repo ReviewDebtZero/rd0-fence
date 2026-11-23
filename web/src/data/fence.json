@@ -1,0 +1,157 @@
+{
+  "corpus_prs": 54058,
+  "unresolvable": {
+    "k": 2361,
+    "n": 54058,
+    "pct": 4.37,
+    "ci95": [
+      4.2,
+      4.54
+    ]
+  },
+  "reaches": {
+    "k": 29283,
+    "n": 51697,
+    "pct": 56.64,
+    "ci95": [
+      56.22,
+      57.07
+    ]
+  },
+  "reaches_high": {
+    "k": 23174,
+    "n": 51697,
+    "pct": 44.83,
+    "ci95": [
+      44.4,
+      45.26
+    ]
+  },
+  "mean_reach": {
+    "pct": 18.83,
+    "ci95": [
+      18.59,
+      19.1
+    ]
+  },
+  "categories": {
+    "unrelated code": 42.87,
+    "ci": 5.79,
+    "dependencies": 7.85,
+    "docs": 22.64,
+    "tests": 15.72,
+    "formatting": 12.59
+  },
+  "agents": [
+    {
+      "name": "Copilot",
+      "prs": 6549,
+      "pct": 82.34,
+      "ci95": [
+        81.38,
+        83.27
+      ]
+    },
+    {
+      "name": "Cursor",
+      "prs": 786,
+      "pct": 67.6,
+      "ci95": [
+        64.17,
+        70.85
+      ]
+    },
+    {
+      "name": "Codex",
+      "prs": 5258,
+      "pct": 56.38,
+      "ci95": [
+        55.01,
+        57.74
+      ]
+    },
+    {
+      "name": "Claude Code",
+      "prs": 40259,
+      "pct": 52.57,
+      "ci95": [
+        52.07,
+        53.07
+      ]
+    },
+    {
+      "name": "Devin",
+      "prs": 961,
+      "pct": 49.89,
+      "ci95": [
+        46.65,
+        53.13
+      ]
+    },
+    {
+      "name": "Jules",
+      "prs": 245,
+      "pct": 40.35,
+      "ci95": [
+        34.19,
+        46.83
+      ]
+    }
+  ],
+  "paichecker": {
+    "instances": 3087,
+    "positives": 455,
+    "auroc": [
+      {
+        "name": "PR size",
+        "ours": false,
+        "auc": 0.757,
+        "ci95": [
+          0.733,
+          0.779
+        ]
+      },
+      {
+        "name": "File count",
+        "ours": false,
+        "auc": 0.673,
+        "ci95": [
+          0.646,
+          0.698
+        ]
+      },
+      {
+        "name": "Fence",
+        "ours": true,
+        "auc": 0.577,
+        "ci95": [
+          0.554,
+          0.601
+        ]
+      },
+      {
+        "name": "TF-IDF text similarity",
+        "ours": false,
+        "auc": 0.577,
+        "ci95": [
+          0.55,
+          0.603
+        ]
+      },
+      {
+        "name": "Top-level directories",
+        "ours": false,
+        "auc": 0.51,
+        "ci95": [
+          0.489,
+          0.532
+        ]
+      }
+    ]
+  },
+  "gold": {
+    "prs": 300,
+    "files": 1471,
+    "per_agent": 50
+  }
+}

@@ -6,5 +6,15 @@ authors:
   - family-names: Jain
     given-names: Harshul
 repository-code: "https://github.com/ReviewDebtZero/rd0-fence"
+url: "https://rd0-fence.netlify.app"
+abstract: >-
+  Fence compares a pull request with the issue it closes and flags each changed part that goes beyond
+  what the issue asked for, with a reason. It is pure Python, runs on CPU and needs no API key.
+keywords:
+  - coding agents
+  - code review
+  - scope creep
+  - pull requests
+  - GitHub Action
 version: "0.1.0"
 license: MIT

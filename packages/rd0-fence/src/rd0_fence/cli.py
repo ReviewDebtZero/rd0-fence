@@ -76,7 +76,9 @@ def cmd_github(a) -> int:
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(prog="fence", description="Fence: flag the parts of a pull request that go beyond what its issue asked for.")
+    ap = argparse.ArgumentParser(
+        prog="fence", description="Fence: flag the parts of a pull request that go beyond what its issue asked for."
+    )
     ap.add_argument("--version", action="version", version=f"fence {__version__}")
     sub = ap.add_subparsers(dest="cmd", required=True)
 

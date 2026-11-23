@@ -1,0 +1,80 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+/**
+ * Fonts are the platform's own. That keeps the build hermetic (no fetch to
+ * Google at build time, which was both slow and flaky in CI) and costs the
+ * visitor nothing to download. To adopt JetBrains Mono / Inter later, drop the
+ * .woff2 files in src/fonts and swap this for next/font/local — the CSS already
+ * reads --font-jetbrains and --font-inter.
+ */
+
+const SITE = "https://rd0-fence.netlify.app";
+const TITLE = "Fence — flag the parts of an agent PR its issue never asked for";
+const DESCRIPTION =
+  "Fence compares a pull request with the issue it closes and comments on each changed part that goes beyond the issue, with a reason. CPU only. No LLM, no API key.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE),
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: ["scope creep", "coding agents", "GitHub Action", "code review", "pull request"],
+  authors: [{ name: "Harshul Jain" }],
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: SITE,
+    siteName: "Fence",
+    type: "website",
+    images: [
+      {
+        url: "/action_comment.png",
+        width: 1200,
+        height: 630,
+        alt: "A Fence comment on a pull request",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/action_comment.png"],
+  },
+  icons: { icon: [{ url: "/favicon.svg", type: "image/svg+xml" }] },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // suppressHydrationWarning on <html>: the theme script below sets
+  // class="dark" before React hydrates, so the server HTML and the client DOM
+  // differ on that one attribute by design.
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <noscript>
+          <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
+        {/* Runs before first paint, so the stored or preferred theme is already
+            applied and there is no flash of the wrong one. Deliberately tiny
+            and dependency-free. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          }}
+        />
+        {/* Loaded in the browser rather than at build time: no build-time fetch
+            to Google that can hang or fail in CI. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font --
+            the rule targets the Pages Router's _document.js. This is the App
+            Router root layout, so the link already applies to every page. */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        />
+      </head>
+      <body className="font-sans antialiased">{children}</body>
+    </html>
+  );
+}

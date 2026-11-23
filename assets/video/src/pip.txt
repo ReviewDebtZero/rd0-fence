@@ -1,0 +1,4 @@
+Processing ./packages/rd0-fence
+  Created wheel for rd0-fence: filename=rd0_fence-0.1.0-py3-none-any.whl size=17987
+Successfully built rd0-fence
+Successfully installed rd0-fence-0.1.0

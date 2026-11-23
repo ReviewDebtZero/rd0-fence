@@ -23,7 +23,7 @@ dependencies = []
 dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.urls]
-Homepage = "https://github.com/ReviewDebtZero/rd0-fence"
+Homepage = "https://rd0-fence.netlify.app"
 Source = "https://github.com/ReviewDebtZero/rd0-fence"
 Issues = "https://github.com/ReviewDebtZero/rd0-fence/issues"
 

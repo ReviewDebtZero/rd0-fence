@@ -26,3 +26,8 @@ research/paper/tooldemo/video/frames/
 # rd0-fence: human labels and local benchmark data stay out of git until annotators finish
 research/experiments/label_audit/app/answers/
 data/
+
+# Demo video build output (the final video lives in web/public/)
+assets/video/src/*.mp4
+assets/video/src/term.html
+!web/src/data/

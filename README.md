@@ -1,22 +1,49 @@
 <p align="center">
+  <img src="assets/banner.svg" alt="rd0/fence — flags the parts of a coding-agent PR that go beyond what its issue asked for" width="100%">
+</p>
+
+<p align="center">
   <b>Fence flags the parts of a coding-agent PR that go beyond what its issue asked for.</b><br>
   <sub>The third tool in <b>rd0</b> — review debt, to zero. Siblings: <a href="https://github.com/ReviewDebtZero/rd0-jinx">Jinx</a> (duplicate PRs) and <a href="https://github.com/ReviewDebtZero/rd0-trellis">Trellis</a> (agent rules into checks).</sub>
 </p>
 
 <p align="center">
+  <a href="https://github.com/ReviewDebtZero/rd0-fence/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ReviewDebtZero/rd0-fence/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-16a34a"></a>
+  <img alt="Python 3.9+" src="https://img.shields.io/badge/python-3.9%2B-3776ab?logo=python&logoColor=white">
   <img alt="CPU only" src="https://img.shields.io/badge/runs%20on-CPU%20only-0d9488">
   <img alt="No API key" src="https://img.shields.io/badge/API%20key-not%20needed-4f46e5">
   <a href="action.yml"><img alt="GitHub Action" src="https://img.shields.io/badge/GitHub%20Action-ready-2088ff?logo=githubactions&logoColor=white"></a>
   <a href="https://huggingface.co/datasets/hao-li/AIDev"><img alt="Data: AIDev" src="https://img.shields.io/badge/data-AIDev%20(CC%20BY%204.0)-ffb000?logo=huggingface&logoColor=black"></a>
+  <a href="https://rd0-fence.netlify.app"><img alt="Website" src="https://img.shields.io/badge/site-rd0--fence.netlify.app-0b5fd0"></a>
 </p>
 
 Coding agents often do a little more than asked: a CI tweak, a dependency bump, a reformatted function, a
 "while I was here" edit in another module. Reviewers catch these by reading the issue and then every changed
 file. Fence does that comparison for them and leaves one comment listing each out-of-scope part and why.
 
-> Status: early. The CLI and Action work; the benchmark and its precision numbers are not done yet, so no
-> accuracy claims are made here.
+## See it work
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <a href="https://rd0-fence.netlify.app/fence_demo.mp4">
+        <img src="assets/demo_preview.gif" alt="Animated preview of the demo video: an issue and a PR, the fence CLI run, and the comment the Fence Action posted on PR #5" width="100%">
+      </a>
+      <sub>Real CLI run and real Action comment (<a href="https://github.com/ReviewDebtZero/rd0-fence/pull/5">PR #5</a>). Click for the full video.</sub>
+    </td>
+    <td width="50%" align="center">
+      <a href="#research">
+        <img src="assets/fig_benchmark.png" alt="Left: share of AIDev agent PRs Fence flags, by agent. Right: AUROC against PAIChecker scope-creep labels, where PR size ranks highest and Fence ties TF-IDF." width="100%">
+      </a>
+      <sub>Left: Fence's own flags on 54,058 AIDev PRs (not human-verified). Right: plain PR size beats Fence on PAIChecker's labels.</sub>
+    </td>
+  </tr>
+</table>
+
+> Status: the CLI and Action work. Fence's precision is not measured yet: a 300-PR gold sheet is ready but has no
+> human labels. The prevalence numbers below are Fence's own flags, and on PAIChecker's human scope-creep labels
+> plain PR size (AUROC 0.757) ranks scope creep better than Fence (0.577).
 
 ## Try it
 
@@ -83,7 +110,13 @@ out-of-scope lines). See [docs/USERS_GUIDE.md](docs/USERS_GUIDE.md).
 - [Feasibility](research/experiments/feasibility/): 69,157 of 361,296 AIDev-pop agent PRs (19.1%) link an issue
   with usable text; 68,192 of those have diff rows.
 - [Benchmark](research/experiments/benchmark/): Fence and four baselines on the 54,058-PR AIDev corpus, plus a check
-  against PAIChecker's human scope-creep labels (where plain PR size currently beats Fence).
+  against PAIChecker's human scope-creep labels. Measured so far, all from Fence's own output:
+  - 2,361 PRs (4.4%) name nothing concrete, so Fence marks their scope unresolvable.
+  - Of the rest, 56.6% [56.2, 57.1] have at least one flagged part and 44.8% [44.4, 45.3] a high-severity one
+    (95% Wilson CIs). By agent the share runs from 40.4% (Jules) to 82.3% (Copilot); Copilot's PRs touch more files,
+    so this is not a ranking of agents.
+  - On 3,087 PAIChecker instances, AUROC is 0.757 for PR size, 0.673 for file count, 0.577 for Fence and for TF-IDF
+    similarity, and 0.510 for top-level directories. PR size wins.
 - [Gold sheet and labeling app](research/experiments/label_audit/): 300 PRs (50 per agent), 1,471 files, labelled per
   file; no human results yet.
 
@@ -94,6 +127,8 @@ packages/rd0-fence/   Python package and `fence` CLI (stdlib only)
 action.yml            composite GitHub Action
 research/             dataset survey, experiment design, feasibility script and results
 docs/                 user guide
+web/                  Next.js static site for Netlify (numbers come from web/src/data/fence.json)
+assets/               banner, benchmark chart, demo GIF; assets/video/ has the video sources
 ```
 
 MIT licensed. Data from AIDev (hao-li/AIDev, CC BY 4.0).
