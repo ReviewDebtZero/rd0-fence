@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import math
 import re
+import warnings
 
 import numpy as np
 
-CHANGED = re.compile(r"^[+-](?![+-]{2} )(.*)$", re.MULTILINE)
+# Per-file patches (GitHub API, AIDev) carry no ---/+++ headers, so every +/- line is a changed line.
+CHANGED = re.compile(r"^[+-](.*)$", re.MULTILINE)
 
 
 def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
@@ -34,6 +36,7 @@ def bootstrap(stat, *arrays, n: int = 2000, seed: int = 0, groups=None) -> tuple
         g = len(members)
         idx = (np.concatenate([members[j] for j in rng.integers(0, g, g)]) for _ in range(n))
     vals = []
+    warnings.filterwarnings("ignore", module="sklearn")
     for ix in idx:
         try:
             vals.append(stat(*[a[ix] for a in arrays]))
