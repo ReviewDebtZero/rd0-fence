@@ -28,7 +28,9 @@ CATEGORY = {
 
 
 def category(part) -> str:
-    return "formatting" if part.hunk else CATEGORY.get(part.kind, part.kind)
+    if part.hunk or part.reason.startswith("formatting-only"):
+        return "formatting"
+    return CATEGORY.get(part.kind, part.kind)
 
 
 def top_dir(path: str) -> str:
