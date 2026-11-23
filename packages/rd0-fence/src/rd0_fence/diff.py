@@ -12,6 +12,7 @@ DEF = re.compile(
     r"^\s*(?:export\s+)?(?:async\s+)?(?:def|class|function|func|fn|interface|type|struct|enum|trait|impl"
     r"|(?:public|private|protected|static|final|abstract)\s[\w<>\[\], ]*?)\s*\(?\s*([A-Za-z_][\w]*)"
 )
+CODE_TOKEN = re.compile(r"\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'|`[^`]*`|\\S")
 ASSIGN_DEF = re.compile(r"^\s*(?:export\s+)?(?:const|let|var)\s+([A-Za-z_]\w*)\s*=")
 
 
@@ -32,8 +33,7 @@ class Hunk:
         """True when the hunk only re-indents or re-wraps lines (same tokens before and after)."""
         if not self.added and not self.removed:
             return False
-        squash = lambda xs: "".join("".join(x.split()) for x in xs)  # noqa: E731
-        return squash(self.added) == squash(self.removed)
+        return CODE_TOKEN.findall("\n".join(self.added)) == CODE_TOKEN.findall("\n".join(self.removed))
 
     def symbols(self) -> set[str]:
         """Names defined in or enclosing this hunk: the @@ header, plus def/class lines (changed or context)."""

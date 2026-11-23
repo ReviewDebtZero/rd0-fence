@@ -130,3 +130,10 @@ def test_plain_diff_u_and_header_like_content():
     files = parse_diff(d)
     assert [f.path for f in files] == ["a.py"]
     assert files[0].hunks[0].removed == ["-- x"] and files[0].hunks[0].added == ["++ y"]
+
+
+def test_space_change_inside_string_is_not_formatting():
+    d = 'diff --git a/a.py b/a.py\n@@ -1,1 +1,1 @@\n-x = "a b"\n+x = "a  b"\n'
+    assert not parse_diff(d)[0].hunks[0].whitespace_only()
+    d2 = 'diff --git a/a.py b/a.py\n@@ -1,1 +1,1 @@\n-x = f( 1 )\n+x = f(1)\n'
+    assert parse_diff(d2)[0].hunks[0].whitespace_only()
