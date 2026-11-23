@@ -51,8 +51,8 @@ def main() -> None:
     ok = df[(df.n_files >= 1) & (df.n_files <= MAX_FILES) & (df.size_lines <= MAX_LINES)]
     rng = np.random.default_rng(SEED)
     picks = []
-    for _agent, g in sorted(ok.groupby("agent")):
-        g = g.sort_values("pr_id")
+    for _agent, grp in sorted(ok.groupby("agent")):
+        g = grp.sort_values("pr_id")
         picks.append(g.iloc[np.sort(rng.choice(len(g), min(PER_AGENT, len(g)), replace=False))])
     s = pd.concat(picks).sample(frac=1, random_state=SEED).reset_index(drop=True)
     ids = set(s.pr_id)
