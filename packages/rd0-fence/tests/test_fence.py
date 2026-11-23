@@ -248,7 +248,7 @@ def test_bare_quoted_word_is_not_an_import():
     iss = Issue.from_text("Fix tokenize crash", "`src/tokenizer.py` crashes on empty input")
     d = (
         "diff --git a/src/tokenizer.py b/src/tokenizer.py\n@@ -1,1 +1,2 @@\n x = 1\n+y = 2\n"
-        "diff --git a/src/billing.py b/src/billing.py\n@@ -1,1 +1,2 @@\n a = 1\n+\"tokenizer\"\n"
+        'diff --git a/src/billing.py b/src/billing.py\n@@ -1,1 +1,2 @@\n a = 1\n+"tokenizer"\n'
     )
     assert "src/billing.py" in {p.path for p in check(iss, parse_diff(d)).flagged}
 
