@@ -115,6 +115,7 @@ def _path_tokens(path: str) -> set[str]:
     return toks
 
 
+IMPORT_LINE = re.compile(r"^\s*(?:import|from|#include|use|using|export)\b|\brequire\(|\bimport\(")
 SHAPED = re.compile(r"_|[a-z][A-Z]|[A-Za-z]\d")
 
 
@@ -215,7 +216,7 @@ def check(issue: Issue, files: list[FileChange]) -> Report:
     for fc in judged:
         if links[fc.path]:
             continue
-        added = "\n".join(line for h in fc.hunks for line in h.added)
+        added = "\n".join(line for h in fc.hunks for line in h.added if IMPORT_LINE.search(line))
         used = [m for m in in_mods if len(m) > 3 and m in added]
         if used:
             links[fc.path] = f"it wires in `{in_mods[used[0]]}`, which is in scope"

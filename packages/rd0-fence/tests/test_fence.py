@@ -147,3 +147,14 @@ def test_file_path_does_not_add_parent_dir_anchor():
 def test_missing_patch_keeps_github_line_counts():
     fc = files_from_patches([{"filename": "big.py", "status": "modified", "additions": 40, "deletions": 2, "changes": 42}])[0]
     assert fc.changed == 42 and not fc.binary
+
+
+def test_mentioning_a_module_in_text_is_not_wiring():
+    iss = Issue.from_text("Fix tokenize crash", "`src/tokenizer.py` crashes on empty input")
+    d = (
+        "diff --git a/src/tokenizer.py b/src/tokenizer.py\n@@ -1,1 +1,2 @@\n x = 1\n+y = 2\n"
+        "diff --git a/src/billing.py b/src/billing.py\n@@ -1,1 +1,2 @@\n a = 1\n+log('tokenizer ready')\n"
+        "diff --git a/src/app.py b/src/app.py\n@@ -1,1 +1,2 @@\n a = 1\n+from src.tokenizer import tokenize\n"
+    )
+    flagged = {p.path for p in check(iss, parse_diff(d)).flagged}
+    assert "src/billing.py" in flagged and "src/app.py" not in flagged
