@@ -58,6 +58,7 @@ class FileChange:
     old_path: str | None = None
     hunks: list[Hunk] = field(default_factory=list)
     binary: bool = False
+    counted: int = 0  # line count reported by GitHub when it omits the patch
 
     @property
     def added(self) -> int:
@@ -69,7 +70,7 @@ class FileChange:
 
     @property
     def changed(self) -> int:
-        return self.added + self.removed
+        return (self.added + self.removed) or self.counted
 
 
 def parse_diff(diff: str) -> list[FileChange]:
@@ -160,6 +161,8 @@ def files_from_patches(items) -> list[FileChange]:
         fc.status = {"deleted": "removed"}.get(st, st)
         fc.old_path = it.get("previous_filename")
         fc.binary = not patch and (it.get("changes") or 0) == 0
+        if not patch:
+            fc.counted = (it.get("additions") or 0) + (it.get("deletions") or 0) or (it.get("changes") or 0)
         out.append(fc)
     return out
 

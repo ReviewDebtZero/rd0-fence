@@ -142,3 +142,8 @@ def test_space_change_inside_string_is_not_formatting():
 def test_file_path_does_not_add_parent_dir_anchor():
     it = Issue.from_text("Bug", "Crash in src/core/login.py; see also docs/guides/ folder")
     assert "src/core" not in it.dirs and "docs/guides" in it.dirs
+
+
+def test_missing_patch_keeps_github_line_counts():
+    fc = files_from_patches([{"filename": "big.py", "status": "modified", "additions": 40, "deletions": 2, "changes": 42}])[0]
+    assert fc.changed == 42 and not fc.binary
