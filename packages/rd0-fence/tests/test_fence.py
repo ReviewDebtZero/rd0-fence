@@ -137,3 +137,8 @@ def test_space_change_inside_string_is_not_formatting():
     assert not parse_diff(d)[0].hunks[0].whitespace_only()
     d2 = 'diff --git a/a.py b/a.py\n@@ -1,1 +1,1 @@\n-x = f( 1 )\n+x = f(1)\n'
     assert parse_diff(d2)[0].hunks[0].whitespace_only()
+
+
+def test_file_path_does_not_add_parent_dir_anchor():
+    it = Issue.from_text("Bug", "Crash in src/core/login.py; see also docs/guides/ folder")
+    assert "src/core" not in it.dirs and "docs/guides" in it.dirs

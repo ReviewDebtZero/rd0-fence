@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 CODE_SPAN = re.compile(r"`([^`\n]{2,200})`")
 FENCE = re.compile(r"```[^\n]*\n(.*?)```", re.DOTALL)
 PATH = re.compile(r"(?<![\w/.-])((?:[\w.-]+/)*[\w-]+\.[A-Za-z0-9]{1,8})(?::\d+)?(?![\w/])")
-DIRPATH = re.compile(r"(?<![\w.-])((?:[\w-]+/){1,}[\w-]+)/?(?![\w.])")
+DIRPATH = re.compile(r"(?<![\w.-])((?:[\w-]+/){1,}[\w-]+)/?(?![\w./])")
 CAMEL = re.compile(r"\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)+\b|\b[a-z]+(?:[A-Z][a-z0-9]+)+\b")
 SNAKE = re.compile(r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b")
 DOTTED = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+\b")
