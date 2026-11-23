@@ -1,12 +1,12 @@
 # Gold sheet: per-file scope labels for 300 agent PRs
 
 Humans label which changed files go beyond what the linked issue asked for. The sheet is drawn from the
-[benchmark corpus](../benchmark/): 50 PRs per agent (Claude Code, Copilot, Codex, Cursor, Devin, Jules), 1,513 files,
+[benchmark corpus](../benchmark/): 50 PRs per agent (Claude Code, Copilot, Codex, Cursor, Devin, Jules), 1,471 files,
 simple random within each agent among PRs with 1-20 files and at most 3,000 changed lines (seed 13; never
 conditioned on Fence's output). Counts are in [`human/sample_summary.json`](human/sample_summary.json).
 
 Labels per file: **in scope**, **out of scope**, **can't tell**. Per PR: **scope unresolvable** when the issue is
-too vague to say what is in scope. Fence marks 16 of the 300 PRs unresolvable; the human count is reported only
+too vague to say what is in scope. Fence marks 19 of the 300 PRs unresolvable; the human count is reported only
 after annotators finish.
 
 - [`app/`](app/): Gradio labeling app (one PR at a time, resumable).

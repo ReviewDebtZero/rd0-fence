@@ -19,9 +19,9 @@
   "OpenAI_Codex": 50
  },
  "sampled_prs": 300,
- "sampled_files": 1513,
- "fence_scope_unresolvable_prs": 16,
- "fence_reaching_prs": 133,
- "fence_out_of_scope_files": 461,
+ "sampled_files": 1471,
+ "fence_scope_unresolvable_prs": 19,
+ "fence_reaching_prs": 136,
+ "fence_out_of_scope_files": 476,
  "seed": 13
 }

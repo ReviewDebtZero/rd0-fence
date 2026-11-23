@@ -1,7 +1,7 @@
 """Fence prevalence on the AIDev corpus, by agent, task type and merge status, with 95% CIs.
 
 Usage: python prevalence.py --corpus data/fence_bench
-Reads prs.parquet, pr_results.parquet, baselines.parquet; writes results/prevalence.json and results/prevalence.md.
+Reads prs.parquet, pr_results.parquet, baselines.parquet; writes results/prevalence.{json,md} and pr_scores.parquet.
 
 Definitions (see ../../docs/experiment_design.md):
 - scope unresolvable: Fence finds no concrete anchor (path, code name or matching file) in the issue, so it marks
@@ -78,7 +78,7 @@ def main() -> None:
     ap.add_argument("--out", default=str(HERE / "results"))
     a = ap.parse_args()
     c = Path(a.corpus)
-    prs = pd.read_parquet(c / "prs.parquet", columns=["pr_id", "agent", "repo_id", "merged", "task_type"])
+    prs = pd.read_parquet(c / "prs.parquet", columns=["pr_id", "agent", "html_url", "repo_id", "merged", "task_type"])
     res = pd.read_parquet(c / "pr_results.parquet")
     base = pd.read_parquet(c / "baselines.parquet", columns=["pr_id", "tfidf_dist"])
     df = prs.merge(res, on="pr_id").merge(base, on="pr_id")
@@ -101,6 +101,9 @@ def main() -> None:
         out["baseline_spearman_vs_reach"][b] = round(float(rho), 3)
     o = Path(a.out)
     o.mkdir(parents=True, exist_ok=True)
+    score_cols = ["pr_id", "agent", "html_url", "merged", "task_type", "anchored", "total_lines", "out_lines", "reach"]
+    score_cols += ["n_flagged", "n_flagged_high", "flag_categories", *BASELINES]
+    df[score_cols].to_parquet(o / "pr_scores.parquet", index=False)
     (o / "prevalence.json").write_text(json.dumps(out, indent=1) + "\n")
     md = "# Fence prevalence on AIDev v5 (machine output, not human-verified)\n\n"
     md += "Brackets are 95% CIs (Wilson for rates, bootstrap for mean reach). Rates use anchored PRs only.\n\n"

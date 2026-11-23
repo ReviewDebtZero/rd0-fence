@@ -35,12 +35,12 @@ Out-of-scope categories (share of anchored PRs with at least one such part):
 
 | category | PRs | % [95% CI] |
 |---|---:|---:|
-| unrelated code | 22,267 | 43.07% [42.65, 43.5] |
+| unrelated code | 22,165 | 42.87% [42.45, 43.3] |
 | ci | 2,994 | 5.79% [5.59, 6.0] |
 | dependencies | 4,057 | 7.85% [7.62, 8.08] |
 | docs | 11,705 | 22.64% [22.28, 23.0] |
 | tests | 8,128 | 15.72% [15.41, 16.04] |
-| formatting | 6,107 | 11.81% [11.54, 12.09] |
+| formatting | 6,507 | 12.59% [12.3, 12.88] |
 
 Spearman correlation of each baseline score with Fence's reach (anchored PRs):
 
