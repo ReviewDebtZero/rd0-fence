@@ -229,3 +229,8 @@ def test_grouped_import_continuation_counts_as_wiring():
         "diff --git a/src/app.ts b/src/app.ts\n@@ -1,1 +1,4 @@\n a = 1\n+import {\n+  tokenize,\n+} from './tokenizer'\n"
     )
     assert "src/app.ts" not in {p.path for p in check(iss, parse_diff(d)).flagged}
+
+
+def test_plain_diff_keeps_real_a_directory():
+    d = "--- a/x.py\n+++ a/x.py\n@@ -1,1 +1,1 @@\n-1\n+2\n--- a/y.py\n+++ b/y.py\n@@ -1,1 +1,1 @@\n-1\n+2\n"
+    assert [f.path for f in parse_diff(d)] == ["a/x.py", "y.py"]
