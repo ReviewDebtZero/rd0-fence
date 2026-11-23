@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "Fence: Flagging the Parts of a Coding-Agent Pull Request That Go Beyond Its Issue"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Jain
+    given-names: Harshul
+repository-code: "https://github.com/ReviewDebtZero/rd0-fence"
+version: "0.1.0"
+license: MIT

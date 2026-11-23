@@ -1,0 +1,62 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -253,6 +253,7 @@ jobs:
+           ls -la build/index.html || exit 1
+ 
+       - name: Rebuild and verify Electron native modules
++        timeout-minutes: 10
+         run: yarn electron:prepare-package
+ 
+       - name: Package Electron app
+@@ -318,6 +319,7 @@ jobs:
+           ls -la build/index.html || exit 1
+ 
+       - name: Rebuild and verify Electron native modules
++        timeout-minutes: 10
+         run: yarn electron:prepare-package
+ 
+       - name: Package Electron app
+@@ -383,6 +385,7 @@ jobs:
+           ls -la build/index.html || exit 1
+ 
+       - name: Rebuild and verify Electron native modules
++        timeout-minutes: 10
+         run: yarn electron:prepare-package
+ 
+       - name: Package Electron app
+@@ -450,6 +453,7 @@ jobs:
+ 
+       - name: Rebuild and verify Electron native modules
+         shell: bash
++        timeout-minutes: 10
+         run: yarn electron:prepare-package
+ 
+       - name: Package Electron app
+diff --git a/forge.config.js b/forge.config.js
+--- a/forge.config.js
++++ b/forge.config.js
+@@ -46,7 +46,10 @@ const config = {
+   },
+ 
+   rebuildConfig: {
+-    force: true,
++    // Only better-sqlite3 is intentionally prepared and verified before packaging.
++    // Using `onlyModules` prevents Forge from rebuilding unrelated optional addons
++    // that inflate Windows package times.
++    onlyModules: ['better-sqlite3'],
+   },
+ 
+   hooks: {
+diff --git a/package.json b/package.json
+--- a/package.json
++++ b/package.json
+@@ -62,7 +62,7 @@
+     "electron:no-delete-data": "yarn build:preload && electron .",
+     "electron:start": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://5chan.localhost:1355 && yarn electron\"",
+     "electron:start:no-delete-data": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://5chan.localhost:1355 && yarn electron:no-delete-data\"",
+-    "electron:rebuild-native": "electron-rebuild -f -w better-sqlite3",
++    "electron:rebuild-native": "electron-rebuild -f -o better-sqlite3",
+     "electron:verify-native": "node scripts/verify-electron-native-modules.js",
+     "electron:prepare-package": "yarn electron:rebuild-native && yarn electron:verify-native",
+     "electron:package": "yarn build && yarn build:preload && yarn electron:prepare-package && electron-forge package",

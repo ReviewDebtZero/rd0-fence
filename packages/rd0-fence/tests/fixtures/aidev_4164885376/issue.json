@@ -1,0 +1,6 @@
+{
+ "number": 391,
+ "title": "Unit tests for integrations are failing",
+ "body": "**Issue Summary**\r\nUnit tests for integrations are failing and need to be fixed.\r\n\r\nSee 4ba3682468fdd5308e964dc0097860edf8c7da15\r\n",
+ "html_url": "https://github.com/alerta/alerta-contrib/issues/391"
+}

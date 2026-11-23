@@ -1,0 +1,9 @@
+{
+ "pr_id": 4087484391,
+ "number": 1099,
+ "title": "fix(ci): scope Electron native rebuilds",
+ "agent": "OpenAI_Codex",
+ "html_url": "https://github.com/bitsocialnet/5chan/pull/1099",
+ "merged_at": "2026-03-17T10:22:57Z",
+ "issue_url": "https://github.com/bitsocialnet/5chan/issues/1098"
+}

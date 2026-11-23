@@ -1,0 +1,262 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -47,6 +47,10 @@ jobs:
+       - name: 安装前端依赖
+         run: npm ci
+ 
++      # Node 单元测试
++      - name: Node 单元测试
++        run: npm test
++
+       # 安装 Rust 工具链 (stable)
+       - name: 安装 Rust 工具链
+         uses: dtolnay/rust-toolchain@stable
+diff --git a/package.json b/package.json
+--- a/package.json
++++ b/package.json
+@@ -24,6 +24,7 @@
+   "scripts": {
+     "dev": "vite",
+     "build": "vite build",
++    "test": "node --test tests/*.test.js",
+     "preview": "vite preview",
+     "tauri": "tauri",
+     "icon:regen": "tauri icon docs/logo.png -o src-tauri/icons",
+diff --git a/scripts/dev-api.js b/scripts/dev-api.js
+--- a/scripts/dev-api.js
++++ b/scripts/dev-api.js
+@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url'
+ import net from 'net'
+ import http from 'http'
+ import crypto from 'crypto'
++import { extractFirstJson } from '../src/lib/json-extract.js'
+ const DOCKER_TASK_TIMEOUT_MS = 10 * 60 * 1000
+ 
+ const __dev_dirname = path.dirname(fileURLToPath(import.meta.url))
+@@ -3007,7 +3008,9 @@ const handlers = {
+     // 尝试真实 CLI
+     try {
+       const out = execSync('npx -y openclaw skills list --json --verbose', { encoding: 'utf8', timeout: 30000 })
+-      return JSON.parse(out)
++      const parsed = extractFirstJson(out)
++      if (!parsed) throw new Error('解析失败: 输出中未找到有效 JSON')
++      return parsed
+     } catch {
+       // CLI 不可用时返回 mock 数据
+       return {
+@@ -3026,15 +3029,19 @@ const handlers = {
+   skills_info({ name }) {
+     try {
+       const out = execSync(`npx -y openclaw skills info ${JSON.stringify(name)} --json`, { encoding: 'utf8', timeout: 30000 })
+-      return JSON.parse(out)
++      const parsed = extractFirstJson(out)
++      if (!parsed) throw new Error('解析失败: 输出中未找到有效 JSON')
++      return parsed
+     } catch (e) {
+       throw new Error('查看详情失败: ' + (e.message || e))
+     }
+   },
+   skills_check() {
+     try {
+       const out = execSync('npx -y openclaw skills check --json', { encoding: 'utf8', timeout: 30000 })
+-      return JSON.parse(out)
++      const parsed = extractFirstJson(out)
++      if (!parsed) throw new Error('解析失败: 输出中未找到有效 JSON')
++      return parsed
+     } catch {
+       return { summary: { total: 0, eligible: 0, disabled: 0, blocked: 0, missingRequirements: 0 }, eligible: [], disabled: [], blocked: [], missingRequirements: [] }
+     }
+diff --git a/src/lib/json-extract.js b/src/lib/json-extract.js
+new file mode 100644
+--- a/src/lib/json-extract.js
++++ b/src/lib/json-extract.js
+@@ -0,0 +1,84 @@
++/**
++ * 从混杂输出中提取第一个合法 JSON 对象或数组。
++ * 用于处理 CLI 在 JSON 前后输出 warning / 提示文本的场景。
++ */
++
++export function extractFirstJson(text) {
++  if (text == null) return null
++
++  const input = String(text)
++  if (!input.trim()) return null
++
++  try {
++    return JSON.parse(input)
++  } catch {
++    // 继续尝试从混杂文本中提取 JSON 片段
++  }
++
++  for (let i = 0; i < input.length; i++) {
++    const ch = input[i]
++    if (ch !== '{' && ch !== '[') continue
++
++    const end = findJsonEnd(input, i)
++    if (end === -1) continue
++
++    try {
++      return JSON.parse(input.slice(i, end + 1))
++    } catch {
++      // 当前候选不是合法 JSON，继续向后扫描
++    }
++  }
++
++  return null
++}
++
++function findJsonEnd(text, start) {
++  const stack = []
++  let inString = false
++  let escaped = false
++
++  for (let i = start; i < text.length; i++) {
++    const ch = text[i]
++
++    if (inString) {
++      if (escaped) {
++        escaped = false
++        continue
++      }
++      if (ch === '\\') {
++        escaped = true
++        continue
++      }
++      if (ch === '"') {
++        inString = false
++      }
++      continue
++    }
++
++    if (ch === '"') {
++      inString = true
++      continue
++    }
++
++    if (ch === '{') {
++      stack.push('}')
++      continue
++    }
++
++    if (ch === '[') {
++      stack.push(']')
++      continue
++    }
++
++    if (ch === '}' || ch === ']') {
++      if (!stack.length || stack.pop() !== ch) {
++        return -1
++      }
++      if (!stack.length) {
++        return i
++      }
++    }
++  }
++
++  return -1
++}
+diff --git a/tests/docker-tasking.test.js b/tests/docker-tasking.test.js
+--- a/tests/docker-tasking.test.js
++++ b/tests/docker-tasking.test.js
+@@ -1,46 +0,0 @@
+-import test from 'node:test'
+-import assert from 'node:assert/strict'
+-
+-import {
+-  DOCKER_TASK_TIMEOUT_MS,
+-  buildDockerDispatchTargets,
+-  buildDockerInstanceSwitchContext,
+-} from '../src/lib/docker-tasking.js'
+-
+-test('Docker 异步任务默认超时提升到 10 分钟', () => {
+-  assert.equal(DOCKER_TASK_TIMEOUT_MS, 10 * 60 * 1000)
+-})
+-
+-test('Docker 派发目标会保留容器和节点信息', () => {
+-  const targets = buildDockerDispatchTargets([
+-    { id: 'container-1234567890ab', name: 'openclaw-coder', nodeId: 'node-a' },
+-    { id: 'container-bbbbbbbbbbbb', name: 'openclaw-writer', nodeId: 'node-b' },
+-  ])
+-
+-  assert.deepEqual(targets, [
+-    { containerId: 'container-1234567890ab', containerName: 'openclaw-coder', nodeId: 'node-a' },
+-    { containerId: 'container-bbbbbbbbbbbb', containerName: 'openclaw-writer', nodeId: 'node-b' },
+-  ])
+-})
+-
+-test('Docker 实例切换上下文会要求整页重载并生成正确注册参数', () => {
+-  const ctx = buildDockerInstanceSwitchContext({
+-    containerId: 'abcdef1234567890',
+-    name: 'openclaw-coder',
+-    port: '21420',
+-    gatewayPort: '28789',
+-    nodeId: 'node-a',
+-  })
+-
+-  assert.equal(ctx.instanceId, 'docker-abcdef123456')
+-  assert.equal(ctx.reloadRoute, true)
+-  assert.deepEqual(ctx.registration, {
+-    name: 'openclaw-coder',
+-    type: 'docker',
+-    endpoint: 'http://127.0.0.1:21420',
+-    gatewayPort: 28789,
+-    containerId: 'abcdef1234567890',
+-    nodeId: 'node-a',
+-    note: 'Added from Docker page',
+-  })
+-})
+diff --git a/tests/json-extract.test.js b/tests/json-extract.test.js
+new file mode 100644
+--- a/tests/json-extract.test.js
++++ b/tests/json-extract.test.js
+@@ -0,0 +1,49 @@
++import test from 'node:test'
++import assert from 'node:assert/strict'
++
++import { extractFirstJson } from '../src/lib/json-extract.js'
++
++test('可直接解析纯 JSON 文本', () => {
++  assert.deepEqual(extractFirstJson('{"ok":true,"count":2}'), {
++    ok: true,
++    count: 2,
++  })
++})
++
++test('可提取前缀 warning 后的 JSON 对象', () => {
++  const raw = [
++    'npm warn deprecated something',
++    'Node.js warning: test',
++    '{"skills":[{"name":"github"}],"cliAvailable":true}',
++  ].join('\n')
++
++  assert.deepEqual(extractFirstJson(raw), {
++    skills: [{ name: 'github' }],
++    cliAvailable: true,
++  })
++})
++
++test('可提取后缀提示前的 JSON 对象', () => {
++  const raw = [
++    '{"skills":[{"name":"weather"}],"cliAvailable":true}',
++    'Update available: openclaw@latest',
++  ].join('\n')
++
++  assert.deepEqual(extractFirstJson(raw), {
++    skills: [{ name: 'weather' }],
++    cliAvailable: true,
++  })
++})
++
++test('字符串里的花括号和方括号不应干扰边界识别', () => {
++  const raw = '{"message":"keep {braces} and [brackets] in string","ok":true}\ntrailing text'
++
++  assert.deepEqual(extractFirstJson(raw), {
++    message: 'keep {braces} and [brackets] in string',
++    ok: true,
++  })
++})
++
++test('没有合法 JSON 时返回 null', () => {
++  assert.equal(extractFirstJson('npm warn deprecated\nnot json here'), null)
++})

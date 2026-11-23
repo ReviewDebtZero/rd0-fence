@@ -1,0 +1,6 @@
+{
+ "number": 1098,
+ "title": "Windows CI `Rebuild and verify Electron native modules` rebuilds unrelated addons and stalls",
+ "body": "The `Package Windows` job can spend tens of minutes in `Rebuild and verify Electron native modules` while the Linux and macOS package jobs finish normally. The current Electron rebuild invocation pulls in unrelated native addons instead of just `better-sqlite3`, which makes the Windows path do far more native-module work than intended and can leave the run effectively stuck.\n",
+ "html_url": "https://github.com/bitsocialnet/5chan/issues/1098"
+}

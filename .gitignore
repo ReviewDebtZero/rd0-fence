@@ -1,0 +1,24 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+.venv/
+venv/
+
+# Node / Next.js (web/)
+node_modules/
+.next/
+out/
+.vercel/
+
+# LaTeX build files (PDFs are committed)
+research/paper/**/*.aux
+research/paper/**/*.log
+research/paper/**/*.bbl
+research/paper/**/*.blg
+research/paper/**/*.fls
+research/paper/**/*.fdb_latexmk
+research/paper/**/*.out
+research/paper/tooldemo/video/frames/

@@ -1,0 +1,3 @@
+include LICENSE README.md
+recursive-include tests *.py *.json *.diff *.md
+recursive-include examples *

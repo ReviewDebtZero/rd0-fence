@@ -1,0 +1,50 @@
+diff --git a/utils/text.py b/utils/text.py
+--- a/utils/text.py
++++ b/utils/text.py
+@@ -1,9 +1,12 @@ import re
+ import re
++import unicodedata
+ 
+ 
+ def slugify(value):
+-    value = re.sub(r"[^a-z0-9]+", "-", value.lower())
++    value = unicodedata.normalize("NFKD", value)
++    value = value.encode("ascii", "ignore").decode("ascii")
++    value = re.sub(r"[^a-z0-9]+", "-", value.lower())
+     return value.strip("-")
+@@ -20,4 +23,4 @@ def truncate(value, n):
+-def truncate(value,n):
+-    return value[:n]
++def truncate(value, n):
++    return value[: n]
+diff --git a/tests/test_text.py b/tests/test_text.py
+--- a/tests/test_text.py
++++ b/tests/test_text.py
+@@ -1,3 +1,7 @@ from utils.text import slugify
+ from utils.text import slugify
++
++
++def test_slugify_non_ascii():
++    assert slugify("Café au lait") == "cafe-au-lait"
+diff --git a/utils/dates.py b/utils/dates.py
+--- a/utils/dates.py
++++ b/utils/dates.py
+@@ -5,6 +5,9 @@ from datetime import datetime
+-def parse(s):
+-    return datetime.strptime(s, "%Y-%m-%d")
++def parse(s, fmt="%Y-%m-%d"):
++    if not s:
++        return None
++    return datetime.strptime(s.strip(), fmt)
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -10,3 +10,3 @@ jobs:
+-        python-version: ["3.9"]
++        python-version: ["3.9", "3.12"]
+diff --git a/requirements.txt b/requirements.txt
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,2 +1,3 @@
+ requests
++python-dateutil
