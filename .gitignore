@@ -31,3 +31,12 @@ data/
 assets/video/src/*.mp4
 assets/video/src/term.html
 !web/src/data/
+
+# LaTeX build files (PDFs are committed)
+research/paper/**/*.aux
+research/paper/**/*.log
+research/paper/**/*.fdb_latexmk
+research/paper/**/*.fls
+research/paper/**/*.out
+research/paper/**/*.blg
+research/paper/**/*.bbl
