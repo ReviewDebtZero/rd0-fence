@@ -251,3 +251,8 @@ def test_bare_quoted_word_is_not_an_import():
         "diff --git a/src/billing.py b/src/billing.py\n@@ -1,1 +1,2 @@\n a = 1\n+\"tokenizer\"\n"
     )
     assert "src/billing.py" in {p.path for p in check(iss, parse_diff(d)).flagged}
+
+
+def test_backticked_url_keeps_following_code_name():
+    it = Issue.from_text("Bug", "Docs at `https://example.com/api` say `parse_header` should accept tabs")
+    assert "parse_header" in it.names

@@ -13,7 +13,7 @@ CAMEL = re.compile(r"\b[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)+\b|\b[a-z]+(?:[A-Z][a-z0
 SNAKE = re.compile(r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b")
 DOTTED = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+\b")
 WORD = re.compile(r"[A-Za-z][A-Za-z0-9]+")
-URL = re.compile(r"https?://\S+")
+URL = re.compile(r"https?://[^\s`'\"<>()\[\]]+")
 ISSUE_REF = re.compile(r"\b[\w.-]+/[\w.-]+#\d+\b")
 
 
