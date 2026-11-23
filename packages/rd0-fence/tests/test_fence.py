@@ -210,3 +210,8 @@ def test_issue_links_are_not_directory_anchors():
     assert not it.dirs and not it.paths
     it2 = Issue.from_text("Bug", "See https://github.com/acme/widgets/blob/main/src/core/login.py")
     assert "src/core/login.py" in it2.paths
+
+
+def test_dir_anchor_before_sentence_period():
+    it = Issue.from_text("UI", "Only touch ui/v2/. Also src/core/login.py")
+    assert "ui/v2" in it.dirs and "src/core" not in it.dirs
