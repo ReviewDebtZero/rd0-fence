@@ -119,6 +119,9 @@ out-of-scope lines). See [docs/USERS_GUIDE.md](docs/USERS_GUIDE.md).
     similarity, and 0.510 for top-level directories. PR size wins.
 - [Gold sheet and labeling app](research/experiments/label_audit/): 300 PRs (50 per agent), 1,471 files, labelled per
   file; no human results yet.
+- Papers (drafts, venue not chosen; precision not measured yet): [empirical short paper](research/paper/empirical/main.pdf)
+  and [tool-demo paper](research/paper/tooldemo/main.pdf). Every number comes from the result files via
+  [`make_paper_numbers.py`](research/paper/scripts/make_paper_numbers.py); see the [claims ledger](research/paper/CLAIMS.md).
 
 ## Layout
 
