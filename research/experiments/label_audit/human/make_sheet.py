@@ -52,6 +52,7 @@ def main() -> None:
     rng = np.random.default_rng(SEED)
     picks = []
     for _agent, g in sorted(ok.groupby("agent")):
+        g = g.sort_values("pr_id")
         picks.append(g.iloc[np.sort(rng.choice(len(g), min(PER_AGENT, len(g)), replace=False))])
     s = pd.concat(picks).sample(frac=1, random_state=SEED).reset_index(drop=True)
     ids = set(s.pr_id)
