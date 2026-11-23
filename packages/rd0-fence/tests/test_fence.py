@@ -158,3 +158,10 @@ def test_mentioning_a_module_in_text_is_not_wiring():
     )
     flagged = {p.path for p in check(iss, parse_diff(d)).flagged}
     assert "src/billing.py" in flagged and "src/app.py" not in flagged
+
+
+def test_issue_naming_a_file_flags_unrelated_only_changes():
+    iss = Issue.from_text("Bug", "Crash in `src/login.py` on empty password")
+    d = "diff --git a/src/billing.py b/src/billing.py\n@@ -1,1 +1,2 @@\n a = 1\n+b = 2\n"
+    rep = check(iss, parse_diff(d))
+    assert rep.anchored and [p.path for p in rep.flagged] == ["src/billing.py"]

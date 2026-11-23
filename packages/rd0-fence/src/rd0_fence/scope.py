@@ -198,7 +198,7 @@ def check(issue: Issue, files: list[FileChange]) -> Report:
     judged = [fc for fc in files if kind_of(fc.path) in ("code", "config", "test")]
     for fc in judged:
         links[fc.path], scores[fc.path] = _file_link(fc, issue, 2, common)
-    rep.anchored = any(links.values())
+    rep.anchored = any(links.values()) or bool(issue.paths or issue.dirs)
     if not rep.anchored:
         for fc in judged:
             links[fc.path], scores[fc.path] = _file_link(fc, issue, 1, common)
