@@ -116,7 +116,7 @@ def _path_tokens(path: str) -> set[str]:
 
 
 IMPORT_LINE = re.compile(
-    r"^\s*(?:import|from|#include|use|using|export)\b|\brequire\(|\bimport\(|^\s*\}\s*from\b|^\s*(?:\w+\s+)?\"[\w./@-]+\"\s*$"
+    r"^\s*(?:import|from|#include|use|using|export)\b|\brequire\(|\bimport\(|^\s*\}\s*from\b|^\s*(?:\w+\s+)?\"[\w.@-]+/[\w./@-]+\"\s*$"
 )
 SHAPED = re.compile(r"_|[a-z][A-Z]|[A-Za-z]\d")
 
