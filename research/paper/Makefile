@@ -6,5 +6,6 @@ numbers:
 empirical tooldemo:
 	cd $@ && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 clean:
-	cd empirical && latexmk -C; cd tooldemo && latexmk -C
+	cd empirical && latexmk -C
+	cd tooldemo && latexmk -C
 .PHONY: all numbers empirical tooldemo clean
