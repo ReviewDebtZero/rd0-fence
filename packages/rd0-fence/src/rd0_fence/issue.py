@@ -25,6 +25,7 @@ def _url_path(m: re.Match) -> str:
             return " " + url.split(sep, 1)[1].split("/", 1)[-1] + " "
     return " "
 
+
 SPLIT = re.compile(r"[A-Z]?[a-z]+|[A-Z]+(?![a-z])|\d+")
 
 _STOP_WORDS = """
