@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rd0-fence"
+version = "0.1.0"
+description = "Fence: flags the parts of an agent PR that go beyond what its issue asked for. The third tool in rd0, a toolkit for review debt."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+authors = [{ name = "Harshul Jain" }]
+keywords = ["code-review", "pull-requests", "coding-agents", "scope-creep", "github-action", "review-debt"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[project.urls]
+Homepage = "https://github.com/ReviewDebtZero/rd0-fence"
+Source = "https://github.com/ReviewDebtZero/rd0-fence"
+Issues = "https://github.com/ReviewDebtZero/rd0-fence/issues"
+
+[project.scripts]
+fence = "rd0_fence.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+rd0_fence = ["py.typed"]

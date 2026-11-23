@@ -1,0 +1,9 @@
+{
+ "pr_id": 4078493051,
+ "number": 82,
+ "title": "fix(skills): parse mixed cli json output",
+ "agent": "OpenAI_Codex",
+ "html_url": "https://github.com/qingchencloud/clawpanel/pull/82",
+ "merged_at": "None",
+ "issue_url": "https://github.com/qingchencloud/clawpanel/issues/64"
+}

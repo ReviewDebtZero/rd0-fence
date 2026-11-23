@@ -1,0 +1,9 @@
+{
+ "pr_id": 4164885376,
+ "number": 418,
+ "title": "fix: fix and re-enable integration tests",
+ "agent": "Claude_Code",
+ "html_url": "https://github.com/alerta/alerta-contrib/pull/418",
+ "merged_at": "2026-03-29T16:14:44Z",
+ "issue_url": "https://github.com/alerta/alerta-contrib/issues/391"
+}

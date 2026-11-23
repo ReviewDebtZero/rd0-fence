@@ -1,0 +1,29 @@
+name: Fence
+description: Comment on a PR with the parts that go beyond what its linked issue asked for (tuned for coding-agent PRs). No LLM, no API keys.
+branding:
+  icon: crop
+  color: orange
+inputs:
+  github-token:
+    description: Token used to read the PR, its linked issue, and post one comment
+    default: ${{ github.token }}
+  issue:
+    description: Issue number to compare against. Empty = the issues the PR body closes (Fixes #N, Closes #N)
+    default: ""
+  min-lines:
+    description: Only comment when at least this many changed lines are out of scope
+    default: "1"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - shell: bash
+      run: pip install --quiet "${{ github.action_path }}/packages/rd0-fence"
+    - shell: bash
+      env:
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_ISSUE: ${{ inputs.issue }}
+        INPUT_MIN_LINES: ${{ inputs.min-lines }}
+      run: python -m rd0_fence.action

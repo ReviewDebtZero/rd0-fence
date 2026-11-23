@@ -1,0 +1,245 @@
+{
+ "min_issue_body_chars": 30,
+ "aidev_v5_pop": {
+  "by_agent": [
+   {
+    "agent": "ALL",
+    "prs": 361296,
+    "linked": 70335,
+    "usable": 69157,
+    "single_issue": 53176,
+    "usable_merged": 45407,
+    "usable_with_diff": 68192,
+    "usable_full_patch": 45011,
+    "usable_90pct_patch": 54058,
+    "usable_pct": 19.14
+   },
+   {
+    "agent": "Claude_Code",
+    "prs": 172597,
+    "linked": 43454,
+    "usable": 42858,
+    "single_issue": 31212,
+    "usable_merged": 29662,
+    "usable_with_diff": 42716,
+    "usable_full_patch": 37394,
+    "usable_90pct_patch": 40259,
+    "usable_pct": 24.83
+   },
+   {
+    "agent": "Copilot",
+    "prs": 98384,
+    "linked": 18942,
+    "usable": 18493,
+    "single_issue": 15769,
+    "usable_merged": 11501,
+    "usable_with_diff": 17675,
+    "usable_full_patch": 788,
+    "usable_90pct_patch": 6549,
+    "usable_pct": 18.8
+   },
+   {
+    "agent": "OpenAI_Codex",
+    "prs": 62731,
+    "linked": 5757,
+    "usable": 5661,
+    "single_issue": 4420,
+    "usable_merged": 3079,
+    "usable_with_diff": 5656,
+    "usable_full_patch": 4988,
+    "usable_90pct_patch": 5258,
+    "usable_pct": 9.02
+   },
+   {
+    "agent": "Cursor",
+    "prs": 12908,
+    "linked": 859,
+    "usable": 845,
+    "single_issue": 771,
+    "usable_merged": 550,
+    "usable_with_diff": 845,
+    "usable_full_patch": 716,
+    "usable_90pct_patch": 786,
+    "usable_pct": 6.55
+   },
+   {
+    "agent": "Devin",
+    "prs": 11219,
+    "linked": 1046,
+    "usable": 1029,
+    "single_issue": 891,
+    "usable_merged": 467,
+    "usable_with_diff": 1029,
+    "usable_full_patch": 893,
+    "usable_90pct_patch": 961,
+    "usable_pct": 9.17
+   },
+   {
+    "agent": "Google_Jules",
+    "prs": 3457,
+    "linked": 277,
+    "usable": 271,
+    "single_issue": 113,
+    "usable_merged": 148,
+    "usable_with_diff": 271,
+    "usable_full_patch": 232,
+    "usable_90pct_patch": 245,
+    "usable_pct": 7.84
+   }
+  ],
+  "repos_with_usable_pr": 8548,
+  "issue_body_chars_q10_25_50_75_90": [
+   201,
+   535,
+   1270,
+   2485,
+   4831
+  ]
+ },
+ "aidev_v3_pop": {
+  "by_agent": [
+   {
+    "agent": "ALL",
+    "prs": 33596,
+    "linked": 4905,
+    "usable": 4766,
+    "single_issue": 4749,
+    "usable_merged": 2185,
+    "usable_with_diff": 773,
+    "usable_full_patch": 482,
+    "usable_90pct_patch": 533,
+    "usable_pct": 14.19
+   },
+   {
+    "agent": "OpenAI_Codex",
+    "prs": 21799,
+    "linked": 190,
+    "usable": 185,
+    "single_issue": 181,
+    "usable_merged": 150,
+    "usable_with_diff": 185,
+    "usable_full_patch": 101,
+    "usable_90pct_patch": 106,
+    "usable_pct": 0.85
+   },
+   {
+    "agent": "Copilot",
+    "prs": 4970,
+    "linked": 4120,
+    "usable": 3993,
+    "single_issue": 3983,
+    "usable_merged": 1776,
+    "usable_with_diff": 0,
+    "usable_full_patch": 0,
+    "usable_90pct_patch": 0,
+    "usable_pct": 80.34
+   },
+   {
+    "agent": "Devin",
+    "prs": 4827,
+    "linked": 429,
+    "usable": 424,
+    "single_issue": 422,
+    "usable_merged": 149,
+    "usable_with_diff": 424,
+    "usable_full_patch": 286,
+    "usable_90pct_patch": 316,
+    "usable_pct": 8.78
+   },
+   {
+    "agent": "Cursor",
+    "prs": 1541,
+    "linked": 64,
+    "usable": 62,
+    "single_issue": 62,
+    "usable_merged": 46,
+    "usable_with_diff": 62,
+    "usable_full_patch": 33,
+    "usable_90pct_patch": 37,
+    "usable_pct": 4.02
+   },
+   {
+    "agent": "Claude_Code",
+    "prs": 459,
+    "linked": 102,
+    "usable": 102,
+    "single_issue": 101,
+    "usable_merged": 64,
+    "usable_with_diff": 102,
+    "usable_full_patch": 62,
+    "usable_90pct_patch": 74,
+    "usable_pct": 22.22
+   }
+  ],
+  "repos_with_usable_pr": 1019,
+  "issue_body_chars_q10_25_50_75_90": [
+   91,
+   191,
+   487,
+   1327,
+   3352
+  ],
+  "task_types": [
+   {
+    "type": "feat",
+    "prs": 14450,
+    "usable": 1514
+   },
+   {
+    "type": "fix",
+    "prs": 8106,
+    "usable": 2194
+   },
+   {
+    "type": "docs",
+    "prs": 3887,
+    "usable": 382
+   },
+   {
+    "type": "test",
+    "prs": 2356,
+    "usable": 134
+   },
+   {
+    "type": "refactor",
+    "prs": 2288,
+    "usable": 239
+   },
+   {
+    "type": "chore",
+    "prs": 896,
+    "usable": 115
+   },
+   {
+    "type": "build",
+    "prs": 627,
+    "usable": 91
+   },
+   {
+    "type": "ci",
+    "prs": 411,
+    "usable": 49
+   },
+   {
+    "type": "perf",
+    "prs": 340,
+    "usable": 36
+   },
+   {
+    "type": "style",
+    "prs": 188,
+    "usable": 4
+   },
+   {
+    "type": "other",
+    "prs": 31,
+    "usable": 6
+   },
+   {
+    "type": "revert",
+    "prs": 16,
+    "usable": 2
+   }
+  ]
+ }
+}

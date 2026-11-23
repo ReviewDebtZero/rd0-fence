@@ -1,0 +1,27 @@
+{
+ "corpus_prs": 54058,
+ "eligible_prs": 44186,
+ "eligibility": "1-20 files and <= 3000 changed lines",
+ "eligible_by_agent": {
+  "Claude_Code": 34131,
+  "OpenAI_Codex": 4510,
+  "Copilot": 3824,
+  "Devin": 849,
+  "Cursor": 648,
+  "Google_Jules": 224
+ },
+ "sampled_by_agent": {
+  "Cursor": 50,
+  "Copilot": 50,
+  "Devin": 50,
+  "Claude_Code": 50,
+  "Google_Jules": 50,
+  "OpenAI_Codex": 50
+ },
+ "sampled_prs": 300,
+ "sampled_files": 1471,
+ "fence_scope_unresolvable_prs": 19,
+ "fence_reaching_prs": 136,
+ "fence_out_of_scope_files": 476,
+ "seed": 13
+}
