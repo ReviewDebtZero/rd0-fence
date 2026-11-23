@@ -44,6 +44,7 @@ jobs:
           python-version: "3.13"
       - run: pip install ruff
       - run: ruff check .
+      - run: ruff format --check .
 
   build:
     runs-on: ubuntu-latest

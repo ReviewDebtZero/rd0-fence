@@ -25,7 +25,7 @@ fence github OWNER/REPO#N [--issue-number N] [--format ...] [--fail-over X]
 |---|---|---|
 | `github-token` | `${{ github.token }}` | reads the PR and issue, writes one comment |
 | `issue` | empty | issue number to compare against; empty = the issues the PR closes |
-| `min-lines` | `1` | comment only when at least this many changed lines are out of scope |
+| `min-lines` | `1` | comment only when at least this many changed lines (added plus removed) are out of scope |
 
 The Action skips PRs that link no issue. It updates its own comment on each push (marker
 `<!-- rd0_fence:v1 -->`) and edits it to "no out-of-scope parts now" when a later push fixes things.
