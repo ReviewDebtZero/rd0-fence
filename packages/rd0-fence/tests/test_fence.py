@@ -123,3 +123,10 @@ def test_aidev_fixture_json_fix_flags_ci_deps_and_unrelated_test():
 
 def test_aidev_fixture_windows_ci_fix_in_scope():
     assert not _fixture("aidev_4087484391").flagged
+
+
+def test_plain_diff_u_and_header_like_content():
+    d = "--- a.py\t2026-01-01\n+++ a.py\t2026-01-02\n@@ -1,2 +1,2 @@\n--- x\n+++ y\n ctx\n"
+    files = parse_diff(d)
+    assert [f.path for f in files] == ["a.py"]
+    assert files[0].hunks[0].removed == ["-- x"] and files[0].hunks[0].added == ["++ y"]

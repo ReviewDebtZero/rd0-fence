@@ -73,10 +73,28 @@ class FileChange:
 
 
 def parse_diff(diff: str) -> list[FileChange]:
+    """Parse `git diff` output, or plain `diff -u` output with only ---/+++ headers."""
     files: list[FileChange] = []
     cur: FileChange | None = None
     h: Hunk | None = None
-    for raw in diff.splitlines():
+    old_left = new_left = 0
+    git_header = False
+    lines = diff.splitlines()
+    for i, raw in enumerate(lines):
+        if raw.startswith(("diff --git ", "@@ ")):
+            old_left = new_left = 0
+        if h is not None and (old_left > 0 or new_left > 0):
+            if raw.startswith("+"):
+                h.added.append(raw[1:])
+                new_left -= 1
+            elif raw.startswith("-"):
+                h.removed.append(raw[1:])
+                old_left -= 1
+            elif not raw.startswith("\\"):
+                h.context.append(raw[1:])
+                old_left -= 1
+                new_left -= 1
+            continue
         if raw.startswith("diff --git "):
             parts = raw[len("diff --git ") :].split(" b/", 1)
             path = parts[1].strip() if len(parts) == 2 else parts[0].strip()
@@ -85,8 +103,22 @@ def parse_diff(diff: str) -> list[FileChange]:
             if cur.old_path:
                 cur.status = "renamed"
             files.append(cur)
+            h, git_header = None, True
+        elif raw.startswith("--- ") and i + 1 < len(lines) and lines[i + 1].startswith("+++ "):
+            if git_header:
+                continue
+            old = _header_path(raw[4:])
+            new = _header_path(lines[i + 1][4:])
+            cur = FileChange(path=new or old or "", old_path=old if old and new and old != new else None)
+            if new is None:
+                cur.status = "removed"
+            elif old is None:
+                cur.status = "added"
+            elif cur.old_path:
+                cur.status = "renamed"
+            files.append(cur)
             h = None
-        elif cur is None:
+        elif cur is None or raw.startswith("+++ "):
             continue
         elif raw.startswith("new file mode"):
             cur.status = "added"
@@ -94,12 +126,12 @@ def parse_diff(diff: str) -> list[FileChange]:
             cur.status = "removed"
         elif raw.startswith(("Binary files", "GIT binary patch")):
             cur.binary = True
-        elif raw.startswith(("--- ", "+++ ")):
-            continue
         elif raw.startswith("@@"):
             m = HUNK.match(raw)
             if m:
                 h = Hunk(int(m.group(1)), int(m.group(3)), (m.group(5) or "").strip())
+                old_left = int(m.group(2)) if m.group(2) is not None else 1
+                new_left = int(m.group(4)) if m.group(4) is not None else 1
                 cur.hunks.append(h)
         elif h is not None and raw.startswith("+"):
             h.added.append(raw[1:])
@@ -108,6 +140,13 @@ def parse_diff(diff: str) -> list[FileChange]:
         elif h is not None and raw.startswith(" "):
             h.context.append(raw[1:])
     return files
+
+
+def _header_path(v: str) -> str | None:
+    p = v.split("\t", 1)[0].strip()
+    if p == "/dev/null":
+        return None
+    return p[2:] if p.startswith(("a/", "b/")) else p
 
 
 def files_from_patches(items) -> list[FileChange]:
