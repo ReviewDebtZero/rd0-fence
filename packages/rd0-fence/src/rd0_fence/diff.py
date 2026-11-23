@@ -111,8 +111,8 @@ def parse_diff(diff: str) -> list[FileChange]:
                 continue
             old = _header_path(raw[4:])
             new = _header_path(lines[i + 1][4:])
-            if old and new and old.startswith("a/") and new.startswith("b/"):
-                old, new = old[2:], new[2:]
+            if (old or "a/").startswith("a/") and (new or "b/").startswith("b/"):
+                old, new = old and old[2:], new and new[2:]
             cur = FileChange(path=new or old or "", old_path=old if old and new and old != new else None)
             if new is None:
                 cur.status = "removed"

@@ -256,3 +256,8 @@ def test_bare_quoted_word_is_not_an_import():
 def test_backticked_url_keeps_following_code_name():
     it = Issue.from_text("Bug", "Docs at `https://example.com/api` say `parse_header` should accept tabs")
     assert "parse_header" in it.names
+
+
+def test_plain_diff_added_and_deleted_paths():
+    d = "--- /dev/null\n+++ b/n.py\n@@ -0,0 +1,1 @@\n+1\n--- a/o.py\n+++ /dev/null\n@@ -1,1 +0,0 @@\n-1\n"
+    assert [(f.path, f.status) for f in parse_diff(d)] == [("n.py", "added"), ("o.py", "removed")]
