@@ -56,5 +56,6 @@ out = {
     "gold": {"prs": sheet["sampled_prs"], "files": sheet["sampled_files"], "per_agent": 50},
 }
 dest = ROOT / "web" / "src" / "data" / "fence.json"
+dest.parent.mkdir(parents=True, exist_ok=True)
 dest.write_text(json.dumps(out, indent=2) + "\n")
 print(dest.relative_to(ROOT))
