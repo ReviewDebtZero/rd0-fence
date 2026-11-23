@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.stage{position:absolute;inset:0}
+.q{position:absolute;left:0;right:0;top:110px;text-align:center;font-size:72px;font-weight:800}
+.q span{display:inline-block}
+.card{position:absolute;border-radius:24px;background:#0f172a;border:2px solid #334155;box-shadow:0 30px 60px rgba(0,0,0,.5);padding:28px 32px}
+.card h3{font-size:30px;display:flex;gap:14px;align-items:center}.card h3 i{width:20px;height:20px;border-radius:50%;background:#22c55e;display:inline-block}
+.card h3 small{color:#94a3b8;font-weight:400;font-size:24px}
+#I{left:180px;top:320px;width:620px;animation:inL .8s .5s forwards}
+#I p{color:#cbd5e1;font-size:26px;margin-top:20px;line-height:1.45}
+#P{right:180px;top:300px;width:820px;animation:inR .8s .9s forwards}
+.f{display:flex;justify-content:space-between;align-items:center;font-size:24px;padding:14px 18px;border-radius:12px;margin-top:14px;background:#1e293b;color:#e2e8f0;transition:background .4s,color .4s}
+.f em{font-style:normal;font-size:20px;color:#94a3b8;opacity:0;transition:opacity .4s}
+.f.in{background:rgba(20,83,45,.6);color:#86efac}.f.in em{color:#86efac;opacity:1}
+.f.out{background:rgba(120,53,15,.6);color:#fde68a}.f.out em{color:#fde68a;opacity:1}
+.t2{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px}
+</style></head><body><div class="bg"></div><div class="dots"></div>
+<div class="stage" style="animation:out .5s 7.4s forwards">
+ <div class="q"><span class="a" style="animation:up .7s .1s forwards">The issue asked for one thing.&nbsp;</span><span class="a grad" style="animation:up .7s 2.0s forwards">The PR did more.</span></div>
+ <div class="card a mono" id="I"><h3><i></i>issue <small>what was asked</small></h3>
+  <p>`slugify("Café au lait")` returns "caf-au-lait". It should keep letters by transliterating them. Please add a test.</p></div>
+ <div class="card a mono" id="P"><h3><i></i>PR <small>what changed</small></h3>
+  <div class="f" id="f1">utils/text.py<em>in scope</em></div>
+  <div class="f" id="f2">tests/test_text.py<em>in scope</em></div>
+  <div class="f" id="f3">utils/dates.py<em>unrelated code</em></div>
+  <div class="f" id="f4">.github/workflows/ci.yml<em>CI, not asked</em></div>
+  <div class="f" id="f5">requirements.txt<em>dependencies</em></div></div>
+</div>
+<div class="t2"><div class="a mono" style="font-size:150px;font-weight:700;animation:up .8s 7.8s forwards"><span style="color:#60a5fa">rd0</span><span style="color:#64748b;font-weight:400"> / </span>fence</div>
+ <div class="a" style="font-size:62px;font-weight:800;animation:up .8s 8.2s forwards">Did the agent do <span class="grad">more than it was asked?</span></div>
+ <div class="a" style="font-size:32px;color:#cbd5e1;animation:up .8s 8.6s forwards">Fence flags each part of a PR its issue never asked for, with a reason.</div></div>
+<script>
+const seq=[["f1","in",3000],["f2","in",3400],["f3","out",4000],["f4","out",4500],["f5","out",5000]];
+seq.forEach(([id,c,t])=>setTimeout(()=>document.getElementById(id).classList.add(c),t));
+</script>
+</body></html>
