@@ -14,6 +14,17 @@ SNAKE = re.compile(r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b")
 DOTTED = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+\b")
 WORD = re.compile(r"[A-Za-z][A-Za-z0-9]+")
 URL = re.compile(r"https?://\S+")
+ISSUE_REF = re.compile(r"\b[\w.-]+/[\w.-]+#\d+\b")
+
+
+def _url_path(m: re.Match) -> str:
+    """Keep the repository path of a blob/tree link; other links (issues, docs sites) name no repo paths."""
+    url = m.group(0)
+    for sep in ("/blob/", "/tree/"):
+        if sep in url:
+            return " " + url.split(sep, 1)[1].split("/", 1)[-1] + " "
+    return " "
+
 SPLIT = re.compile(r"[A-Z]?[a-z]+|[A-Z]+(?![a-z])|\d+")
 
 _STOP_WORDS = """
@@ -71,7 +82,7 @@ class Issue:
     def from_text(cls, title: str = "", body: str = "", number: int | None = None) -> Issue:
         it = cls(title=title or "", body=body or "", number=number)
         text = f"{it.title}\n{it.body}"
-        text_nourl = URL.sub(lambda m: " " + m.group(0).split("/blob/")[-1].split("/tree/")[-1] + " ", text)
+        text_nourl = ISSUE_REF.sub(" ", URL.sub(_url_path, text))
         spans = CODE_SPAN.findall(text_nourl) + FENCE.findall(text_nourl)
         for p in PATH.findall(text_nourl):
             if not re.fullmatch(r"v?\d+(\.\d+)+", p) and not p.lower().startswith("e.g"):

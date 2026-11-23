@@ -203,3 +203,10 @@ def test_action_ignores_issues_in_other_repos():
     gh = _FakeGH([])
     assert run({"pull_request": {"number": 3, "body": "Fixes other/private#9"}}, gh) is None
     assert gh.calls == []
+
+
+def test_issue_links_are_not_directory_anchors():
+    it = Issue.from_text("Flaky", "Same as https://github.com/acme/widgets/issues/5 and acme/widgets#7")
+    assert not it.dirs and not it.paths
+    it2 = Issue.from_text("Bug", "See https://github.com/acme/widgets/blob/main/src/core/login.py")
+    assert "src/core/login.py" in it2.paths
