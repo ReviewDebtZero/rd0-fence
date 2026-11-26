@@ -1,8 +1,9 @@
 # Claims ledger
 
-Every number in either paper comes from `generated/numbers.tex` and the `generated/tab_*.tex` tables, which
+Every number in the paper (`short/`, and the deferred `tooldemo/` draft) comes from `generated/numbers.tex` and the `generated/tab_*.tex` tables, which
 `scripts/make_paper_numbers.py` builds from the files below. No number is typed into the LaTeX by hand.
-All prevalence numbers are Fence's own flags; no human-label result is reported (the gold sheet is unlabelled).
+All prevalence numbers are Fence's own flags; no human-label result is reported (the gold sheet is unlabelled, and
+the gold-sheet table in the paper is an explicit placeholder with no values).
 
 | Claim | Source |
 |---|---|
@@ -14,5 +15,7 @@ All prevalence numbers are Fence's own flags; no human-label result is reported 
 | Latency (median / p90 / p99 ms per PR on 2,000 PRs) | `results/latency.json` (`latency.py`) |
 | Gold sheet: 300 PRs, 1,471 files, 19 Fence-unresolvable | `research/experiments/label_audit/human/sample_summary.json` |
 | Revert causes 22.33% / 22.13% / 17.71% of 33,580 agent PRs | Oukhay et al., MSR 2026, doi 10.1145/3793302.3793587 |
+| Extra edits mostly tests (61%) and docs (13%) on SWE-bench Verified | Goel, Steenhoek, Hu (Microsoft), arXiv 2611.34875 |
+| Self-initiated overreach in 10.20% of misalignment episodes | Tang et al., arXiv 2605.29442 |
 
 Rebuild: `make -C research/paper PY=python` (needs matplotlib and a TeX Live with latexmk).
