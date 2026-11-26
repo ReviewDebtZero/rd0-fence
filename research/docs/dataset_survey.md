@@ -66,6 +66,7 @@ Caveats we measured:
 | Overeager Coding Agents (arXiv 2605.18583), SWE-Misbehavior (arXiv 2610.18206) | out-of-scope agent actions in sandboxes / synthetic tasks | not real merged PRs |
 | Refactoring Runaway (arXiv 2605.22526) | tangled refactorings in agent patches | refactoring only |
 | Tangled-change work (Herzig and Zeller; SCAM 2018 slicing; CoRA, ASE 2019; UTango) | split a commit into concerns | no issue as the reference |
+| Industry: Meta ARCTIC (arXiv 2607.29516); Microsoft over-edit DRA (arXiv 2611.34875) | LLM drift / unrequested-change scoring against chat intent (Meta, internal); trajectory replay + test reruns to find unneeded edits (SWE-bench Verified, DeepSWE) | need an LLM, trajectories or tests; internal or benchmark data, not issue vs diff on public agent PRs |
 | Tools: Verdict, pr-guardrails, intentguard, Commitor | LLM PR-vs-ticket or tangled-commit checks | need an API key; no published evaluation |
 
 Defensible gap: nobody has measured, on real agent PRs at scale, how much of a diff falls outside its linked
